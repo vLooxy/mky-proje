@@ -74,5 +74,10 @@ export async function savePageContent(id: string, data: {
 
     revalidatePath("/admin/builder");
     revalidatePath(`/admin/builder/${id}`);
+
+    // Revalidate public pages
+    revalidatePath("/", "layout"); // Revalidate everything to be safe
+    revalidatePath(`/${slug}`); // Revalidate specific page
+
     return { success: true };
 }
