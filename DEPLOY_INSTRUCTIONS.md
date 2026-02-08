@@ -1,66 +1,55 @@
-# Deploying Engisafe Web to Vercel with Neon DB Integration
+# Vercel Deployment Guide (Production Ready)
 
-This guide helps you deploy your Next.js application to Vercel and set up Neon DB directly from the Vercel dashboard.
+Bu rehber, projenizin Vercel üzerinde sorunsuz çalışması ve "localhost" bağımlılığının tamamen bitmesi için gerekli adımları içerir.
 
-## 1. Deploy to Vercel
+## 1. Hazırlık (Lokal'de Yapıldı) ✅
 
-1.  **Push your code to GitHub** (You've already done this).
-2.  Go to [vercel.com](https://vercel.com) and log in.
-3.  Click **"Add New..."** -> **"Project"**.
-4.  Import your `engisafe-web` repository.
-5.  In the "Configure Project" screen, leave everything as default for now.
-6.  Click **"Deploy"**.
+- [x] Veritabanı Neon (PostgreSQL) olarak ayarlandı.
+- [x] Admin paneli dosya sisteminden veritabanına taşındı.
+- [x] "Force Dynamic" ayarı ile anlık güncelleme sağlandı.
+- [x] Kod içindeki `localhost` referansları temizlendi.
 
-## 2. Add Neon Database Integration
+## 2. Vercel Ortam Değişkenleri (Environment Variables)
 
-Once the deployment process starts (or after it finishes/fails):
+Projenizin Vercel'de çalışması için aşağıdaki değişkenlerin **Vercel Project Settings -> Environment Variables** kısmına eklenmesi ŞARTTIR.
 
-1.  Go to your project dashboard in Vercel.
-2.  Click on the **"Storage"** tab at the top.
-3.  Click **"Connect Store"**.
-4.  Select **"Neon"** (Serverless Postgres) from the list.
-5.  Click **"Connect"** (or "Install Integration" if it's your first time).
-6.  Follow the prompts to create a new Neon database.
-    - **Region**: Choose **Frankfurt (fra1)** to match your Vercel function region for best performance.
+| Key | Value (Değer) | Açıklama |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | `postgresql://...` (Pooled) | Neon DB'den (Pooled Connection) aldığınız bağlantı adresi. |
+| `DIRECT_URL` | `postgresql://...` (Direct) | Neon DB'den (Direct Connection) aldığınız bağlantı adresi. |
 
-## 3. Redeploy
+> **Not:** `NEXT_PUBLIC_APP_URL` gibi değişkenlere ihtiyacınız YOKTUR, sistem otomatik olarak çalışacak şekilde ayarlandı.
 
-The integration automatically adds the necessary environment variables (`DATABASE_URL`, `DIRECT_URL`, etc.) to your Vercel project properly.
+## 3. Deployment (Yayınlama)
 
-1.  Go to the **"Deployments"** tab.
-2.  Click the three dots `...` on your latest deployment (or the failed one) and select **"Redeploy"**.
-3.  Enable **"Redeploy with existing build cache"** is fine, or just click "Redeploy".
+Kodlarınız şu an Vercel'e uyumlu. Tek yapmanız gereken değişiklikleri göndermek:
 
-## 4. Database Migration (Important)
+1.  Terminale şu komutları yazın (eğer son değişiklikleri göndermediyseniz):
+    ```bash
+    git add .
+    git commit -m "chore: prepare for production"
+    git push
+    ```
 
-Your database is now connected, but it's empty. You need to run migrations to create the tables.
+2.  Vercel Dashboard'a gidin.
+3.  Projenize girin -> **Deployments** sekmesi.
+4.  Son commit'inizin yanındaki üç noktaya tıklayıp **Redeploy** deyin.
+    - **"Use existing Build Cache" seçeneğinin KAPALI (işaretsiz) olduğundan emin olun.**
 
-**Option A (Recommended): Connect Local to Remote**
-1.  Go to Vercel Project Settings -> Environment Variables.
-2.  Copy the `DATABASE_URL` and `DIRECT_URL` values.
-3.  Paste them into your local `.env` file.
-4.  Run `npx prisma migrate dev --name init` locally. This will apply the schema to your remote Neon DB.
+## 4. Veritabanı Kurulumu (İlk Sefer İçin)
 
-**Option B: Build Command (Advanced)**
-Alternatively, you can update your "Build Command" in Vercel settings to:
-`npx prisma migrate deploy && prisma generate && next build`
-*Note: This runs migrations on every deploy, which is generally safe for additive changes.*
+Deployment bittiğinde siteniz açılacak ama içi boş olabilir. Veritabanını doldurmak için **Lokal Bilgisayarınızdan** şu komutu çalıştırın:
 
-## Troubleshooting: "Build Error" or "Empty Environment Variables"
+```bash
+# Bu komut Vercel'deki veritabanına örnek verileri basar
+npx prisma db seed
+```
+*(Bunun çalışması için yerel `.env` dosyanızda Vercel'deki aynı `DATABASE_URL` yazıyor olmalıdır).*
 
-If your Vercel project's **Settings -> Environment Variables** section is empty, the database connection will fail. You must add them manually:
+## 5. Artık Localhost'a İhtiyacınız Yok
 
-1.  Go to your **Neon Dashboard** -> **Connection Details**.
-2.  Copy the **Pooled connection string**.
-3.  Go to **Vercel Settings -> Environment Variables**.
-4.  Add a new variable:
-    - **Key**: `DATABASE_URL`
-    - **Value**: (Paste the pooled string here)
-    - Check all environments (Production, Preview, Development).
-5.  Back in **Neon**, uncheck "Pooled connection" to get the **Direct connection string**.
-6.  Add another variable in **Vercel**:
-    - **Key**: `DIRECT_URL`
-    - **Value**: (Paste the direct string here)
-    - Check all environments.
-7.  **Redeploy** your project.
+Artık sitenizi yönetmek için:
+- **Site:** `https://engisafe-web.vercel.app` (veya kendi domaininiz)
+- **Admin Paneli:** `https://engisafe-web.vercel.app/admin`
 
+Her şey bulutta (Vercel + Neon) çalışıyor. Bilgisayarınızı kapatsanız bile site çalışmaya devam eder.
