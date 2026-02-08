@@ -3,6 +3,9 @@ import { prisma } from "@/lib/db";
 import { incrementVisit } from "@/actions/analytics-actions";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Home() {
   await incrementVisit(); // Track visit
 

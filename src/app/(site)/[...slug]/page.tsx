@@ -4,6 +4,9 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type Props = {
     params: Promise<{ slug: string[] }>
 }
