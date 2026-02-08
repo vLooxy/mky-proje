@@ -46,3 +46,21 @@ Alternatively, you can update your "Build Command" in Vercel settings to:
 `npx prisma migrate deploy && prisma generate && next build`
 *Note: This runs migrations on every deploy, which is generally safe for additive changes.*
 
+## Troubleshooting: "Build Error" or "Empty Environment Variables"
+
+If your Vercel project's **Settings -> Environment Variables** section is empty, the database connection will fail. You must add them manually:
+
+1.  Go to your **Neon Dashboard** -> **Connection Details**.
+2.  Copy the **Pooled connection string**.
+3.  Go to **Vercel Settings -> Environment Variables**.
+4.  Add a new variable:
+    - **Key**: `DATABASE_URL`
+    - **Value**: (Paste the pooled string here)
+    - Check all environments (Production, Preview, Development).
+5.  Back in **Neon**, uncheck "Pooled connection" to get the **Direct connection string**.
+6.  Add another variable in **Vercel**:
+    - **Key**: `DIRECT_URL`
+    - **Value**: (Paste the direct string here)
+    - Check all environments.
+7.  **Redeploy** your project.
+
