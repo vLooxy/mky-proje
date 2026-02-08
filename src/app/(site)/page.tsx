@@ -12,7 +12,15 @@ export default async function Home() {
   });
 
   if (!page) {
-    return notFound();
+    // Return empty page instead of 404 to allow build to pass even if DB is empty
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Welcome to Engisafe Web</h1>
+          <p className="mt-2 text-gray-600">Site content is being initialized...</p>
+        </div>
+      </main>
+    );
   }
 
   return (
