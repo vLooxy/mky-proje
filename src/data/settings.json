@@ -1,0 +1,107 @@
+{
+  "site": {
+    "title": "MKY Grup",
+    "description": "Hassas mühendislik ve iş sağlığı & güvenliği uyumluluğu konusunda güvenilir çözüm ortağınız.",
+    "copyright": "© 2026 MKY Grup. Tüm hakları saklıdır."
+  },
+  "contact": {
+    "address": "123 İnovasyon Cad, Teknoloji Kenti",
+    "phone": "+90 (555) 123-4567",
+    "email": "info@mkygrup.com"
+  },
+  "social": {
+    "linkedin": "https://linkedin.com",
+    "twitter": "https://twitter.com",
+    "instagram": "https://instagram.com",
+    "facebook": "https://facebook.com"
+  },
+  "header": {
+    "navItems": [
+      {
+        "label": "Ana Sayfa",
+        "href": "/",
+        "id": "573be0d8-8682-4276-95af-b03b9e7f664c"
+      },
+      {
+        "label": "Kurumsal",
+        "href": "#",
+        "subItems": [
+          {
+            "label": "Hakkımızda",
+            "href": "/hakkimizda"
+          },
+          {
+            "label": "Misyon & Vizyon",
+            "href": "/misyon-vizyon"
+          }
+        ],
+        "id": "340d97be-3bfc-40f0-8c9e-ad9d1d50c9ed"
+      },
+      {
+        "label": "Hizmetlerimiz",
+        "href": "/hizmetlerimiz",
+        "id": "3519f69b-857a-4bbf-b7e1-0cf85cc31797"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog",
+        "id": "b790e4ec-2085-4efd-b0d2-428f3778a15d"
+      },
+      {
+        "label": "İletişim",
+        "href": "/iletisim",
+        "id": "fb0f0117-d63d-4c27-82fb-5681325c8249"
+      }
+    ]
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Kurumsal",
+        "links": [
+          {
+            "label": "Kariyer",
+            "href": "/",
+            "id": "6672856b-4dad-4e83-81dd-44da315aa7be"
+          },
+          {
+            "label": "Hakkımızda",
+            "href": "/hakkimizda",
+            "id": "9dd0a048-484c-498e-b8f2-658675555652"
+          },
+          {
+            "label": "Basın & Medya",
+            "href": "/",
+            "id": "0092c498-9c5b-4a03-af47-cabe64e9d02a"
+          },
+          {
+            "label": "İletişim",
+            "href": "/iletisim",
+            "id": "02f78f0b-1ed4-454d-b334-a234155340b7"
+          }
+        ]
+      },
+      {
+        "title": "Hizmetler",
+        "links": [
+          {
+            "label": "İSG Danışmanlığı",
+            "href": "/"
+          },
+          {
+            "label": "Yapısal Mühendislik",
+            "href": "/"
+          },
+          {
+            "label": "Çevresel Etki ÇED",
+            "href": "/"
+          },
+          {
+            "label": "Güvenlik Eğitimi",
+            "href": "/"
+          }
+        ]
+      }
+    ]
+  }
+}

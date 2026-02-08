@@ -1,0 +1,29 @@
+{
+  "home": {
+    "hero": {
+      "badge": "ISO 9001 Sertifikalı Güvenlik",
+      "title_line1": "MÜKEMMEL",
+      "title_highlight": "MÜHENDİSLİK",
+      "description": "Modern endüstriler için riskleri minimize ediyor, verimliliği maksimize ediyoruz. Güvenlik bir seçenek değil, temeldir.",
+      "button_primary": "Danışmanlık Alın",
+      "button_secondary": "Hizmetlerimiz",
+      "backgroundImage": "https://images.pexels.com/photos/1038935/pexels-photo-1038935.jpeg"
+    },
+    "stats": {
+      "stat1_value": "12+",
+      "stat1_label": "Yıllık Deneyim",
+      "stat2_value": "500+",
+      "stat2_label": "Tamamlanan Proje",
+      "stat3_value": "%98",
+      "stat3_label": "Müşteri Memnuniyeti",
+      "stat4_value": "7/24",
+      "stat4_label": "Teknik Destek"
+    }
+  },
+  "about": {
+    "main": {
+      "title": "Hakkımızda",
+      "content": "MKY Grup olarak..."
+    }
+  }
+}

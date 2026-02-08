@@ -1,0 +1,9 @@
+{
+    "framework": "nextjs",
+    "cleanUrls": true,
+    "regions": [
+        "fra1"
+    ],
+    "buildCommand": "prisma generate && next build",
+    "installCommand": "npm install"
+}

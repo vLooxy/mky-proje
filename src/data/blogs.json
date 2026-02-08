@@ -1,0 +1,44 @@
+[
+  {
+    "id": "2",
+    "slug": "surdurulebilir-malzemeler",
+    "title": "Endüstriyel İnşaatta Sürdürülebilir Malzemeler",
+    "snippet": "Büyük ölçekli yapısal mühendislik projelerinde çevre dostu beton alternatiflerine ve geri dönüştürülmüş çeliğe geçişi keşfediyoruz.",
+    "content": "",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBZqvAb3x2xbgdKegiZwJ55ufUgbsCVqXcTTd_aju5o53E2CHhrP-mKg3vJRiCg0-qJRyatntUOzbyjxO3FjzdRKRNcYToouCjE8ZreT6aSuMKY9eIp3v42kSozOBBMZM4k9lboiVWoLbeCqRUpK_VjzZy_-pwA9Z3fzH1_wz5_utT2oxdbQ2WZ3fd0nTV0IK5qGET_QUOktmuLc9_Nn5_gMWKnU1bSa0UUmWEqoB-SQLBkV8n3iLRO76cZkm3uztDibiVTFLxuTkA",
+    "author": "Mark Roberts",
+    "date": "08 Ekim 2023",
+    "readTime": "8 dk okuma",
+    "badge": "Mühendislik Trendleri",
+    "badgeColor": "bg-emerald-600/90",
+    "status": "published"
+  },
+  {
+    "id": "3",
+    "slug": "eski-fabrikalar-iyilestirme",
+    "title": "Eski Fabrikaların Modern Güvenlik İçin İyileştirilmesi",
+    "snippet": "50 yıllık bir üretim tesisinin stratejik yapısal güçlendirmelerle modern güvenlik uyumluluğuna ulaşmasına nasıl yardımcı olduğumuza detaylı bir bakış.",
+    "content": "",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuB3mlpP3bZMgFCjR5tTiK6--mwPwN-QpBXYVk91M4IWfmlaZkN6yjs3AKDL4c6ow9Q6VPrdQGEhkXbdRXdYk10IVp4Xs2Df7Ol8M12s5BbDZ9WIxToVLLbym6SUqt1SO6ON-RzMSTu0u6sIhWaGm5ELu3bPLoNB5NJ7OI5zqeI-fEiSjfH9zBAuW8JxuI5GcDOc_IEnfjZ_LaIzWOTow3rrAVRg3sqmdxuevI_NhuwI3eu5Hcn4N3mxi2Lxh1ULYAg04C0NAoZLZl8",
+    "author": "James Chen",
+    "date": "25 Eylül 2023",
+    "readTime": "6 dk okuma",
+    "badge": "Vaka Çalışmaları",
+    "badgeColor": "bg-amber-600/90",
+    "status": "published"
+  },
+  {
+    "id": "4",
+    "slug": "osha-guncellemeleri-q4",
+    "title": "4. Çeyrek OSHA Güncellemelerini Anlamak",
+    "snippet": "Olası cezalardan ve güvenlik risklerinden bir adım önde olun. İşte bu çeyrekte mühendislik sektörünü etkileyen en önemli OSHA güncellemelerinin bir özeti.",
+    "content": "",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDbiEf3-dxxxW6ry5B7urPbpLud0tO1NG8MNYRInTh2FyPbYuHsdcE-p2gcy6N9kG-LdXHWZFjYtJvxQcFPDPtRBiYE-2HzAjp6-ww23INfXhjHfy4bW9iMfum_kB7BArcQYFOkPx1xJVveW_5b0i1otJqFpRCpMvxDztfJZFpnDGfEFPboa4BJDR6IYce5AvAiJpBCjJtTcXFzZrzKDmCfRcksesqgnDH45a0KgBj4DcBsR28N0FC_9pj8bw4YQeUGas9Bl_1diZc",
+    "author": "Dr. Sarah Jenning",
+    "date": "15 Eylül 2023",
+    "readTime": "4 dk okuma",
+    "badge": "Uyumluluk",
+    "badgeColor": "bg-purple-600/90",
+    "status": "published"
+  }
+]
