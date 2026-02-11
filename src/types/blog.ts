@@ -1,3 +1,11 @@
+export interface BlogCategory {
+    id: string;
+    name: string;
+    slug: string;
+    color: string; // tailwind class e.g. "bg-blue-500"
+    count?: number; // optional for display
+}
+
 export interface BlogPost {
     id: string;
     title: string;
@@ -9,4 +17,5 @@ export interface BlogPost {
     author?: string;
     tags?: string[];
     isPublished?: boolean;
+    categoryId?: string;
 }

@@ -1,44 +1,23 @@
 [
   {
-    "id": "2",
-    "slug": "surdurulebilir-malzemeler",
-    "title": "Endüstriyel İnşaatta Sürdürülebilir Malzemeler",
-    "snippet": "Büyük ölçekli yapısal mühendislik projelerinde çevre dostu beton alternatiflerine ve geri dönüştürülmüş çeliğe geçişi keşfediyoruz.",
-    "content": "",
-    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBZqvAb3x2xbgdKegiZwJ55ufUgbsCVqXcTTd_aju5o53E2CHhrP-mKg3vJRiCg0-qJRyatntUOzbyjxO3FjzdRKRNcYToouCjE8ZreT6aSuMKY9eIp3v42kSozOBBMZM4k9lboiVWoLbeCqRUpK_VjzZy_-pwA9Z3fzH1_wz5_utT2oxdbQ2WZ3fd0nTV0IK5qGET_QUOktmuLc9_Nn5_gMWKnU1bSa0UUmWEqoB-SQLBkV8n3iLRO76cZkm3uztDibiVTFLxuTkA",
-    "author": "Mark Roberts",
-    "date": "08 Ekim 2023",
-    "readTime": "8 dk okuma",
-    "badge": "Mühendislik Trendleri",
-    "badgeColor": "bg-emerald-600/90",
-    "status": "published"
-  },
-  {
-    "id": "3",
-    "slug": "eski-fabrikalar-iyilestirme",
-    "title": "Eski Fabrikaların Modern Güvenlik İçin İyileştirilmesi",
-    "snippet": "50 yıllık bir üretim tesisinin stratejik yapısal güçlendirmelerle modern güvenlik uyumluluğuna ulaşmasına nasıl yardımcı olduğumuza detaylı bir bakış.",
-    "content": "",
-    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuB3mlpP3bZMgFCjR5tTiK6--mwPwN-QpBXYVk91M4IWfmlaZkN6yjs3AKDL4c6ow9Q6VPrdQGEhkXbdRXdYk10IVp4Xs2Df7Ol8M12s5BbDZ9WIxToVLLbym6SUqt1SO6ON-RzMSTu0u6sIhWaGm5ELu3bPLoNB5NJ7OI5zqeI-fEiSjfH9zBAuW8JxuI5GcDOc_IEnfjZ_LaIzWOTow3rrAVRg3sqmdxuevI_NhuwI3eu5Hcn4N3mxi2Lxh1ULYAg04C0NAoZLZl8",
-    "author": "James Chen",
-    "date": "25 Eylül 2023",
-    "readTime": "6 dk okuma",
-    "badge": "Vaka Çalışmaları",
-    "badgeColor": "bg-amber-600/90",
-    "status": "published"
-  },
-  {
-    "id": "4",
-    "slug": "osha-guncellemeleri-q4",
-    "title": "4. Çeyrek OSHA Güncellemelerini Anlamak",
-    "snippet": "Olası cezalardan ve güvenlik risklerinden bir adım önde olun. İşte bu çeyrekte mühendislik sektörünü etkileyen en önemli OSHA güncellemelerinin bir özeti.",
-    "content": "",
-    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDbiEf3-dxxxW6ry5B7urPbpLud0tO1NG8MNYRInTh2FyPbYuHsdcE-p2gcy6N9kG-LdXHWZFjYtJvxQcFPDPtRBiYE-2HzAjp6-ww23INfXhjHfy4bW9iMfum_kB7BArcQYFOkPx1xJVveW_5b0i1otJqFpRCpMvxDztfJZFpnDGfEFPboa4BJDR6IYce5AvAiJpBCjJtTcXFzZrzKDmCfRcksesqgnDH45a0KgBj4DcBsR28N0FC_9pj8bw4YQeUGas9Bl_1diZc",
-    "author": "Dr. Sarah Jenning",
-    "date": "15 Eylül 2023",
-    "readTime": "4 dk okuma",
-    "badge": "Uyumluluk",
-    "badgeColor": "bg-purple-600/90",
-    "status": "published"
+    "title": "Lorem Ipsum",
+    "slug": "Lorem",
+    "excerpt": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus facilisis rhoncus. Aenean dictum viverra metus, convallis suscipit diam consectetur sed. Duis ultricies neque a vehicula posuere. Proin placerat dictum dolor, non tristique nisl maximus ac. Nam nec consequat nulla. Aenean pulvinar sed arcu in dignissim. Praesent condimentum augue ut ante consectetur, ac tristique quam iaculis. Curabitur convallis semper tellus eu facilisis. Vivamus pulvinar pulvinar vehicula. Mauris fermentum neque sed ante elementum vehicula.",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus facilisis rhoncus. Aenean dictum viverra metus, convallis suscipit diam consectetur sed. Duis ultricies neque a vehicula posuere. Proin placerat dictum dolor, non tristique nisl maximus ac. Nam nec consequat nulla. Aenean pulvinar sed arcu in dignissim. Praesent condimentum augue ut ante consectetur, ac tristique quam iaculis. Curabitur convallis semper tellus eu facilisis. Vivamus pulvinar pulvinar vehicula. Mauris fermentum neque sed ante elementum vehicula.\n\nSed sapien arcu, tincidunt a elementum sed, malesuada nec tellus. Proin maximus ipsum at eleifend efficitur. Vestibulum ullamcorper orci ac eros pulvinar gravida. Morbi lacus ex, porta vel sem at, vulputate blandit magna. Phasellus risus felis, venenatis eu metus non, tristique eleifend risus. Morbi eget rutrum libero, vel scelerisque ligula. Praesent aliquam enim cursus, molestie lacus eu, luctus nibh. Phasellus laoreet elit vitae lectus semper, in tempus eros dignissim.\n\nFusce urna mi, ornare et nunc ut, auctor dignissim ligula. Nam in massa nec massa pulvinar porttitor ac vel tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc quis libero sit amet erat varius viverra vel quis nisl. Curabitur eget sem placerat, dignissim odio ac, dictum augue. Aenean ac sodales nulla. Pellentesque mattis, ante vehicula accumsan finibus, urna est gravida purus, ut scelerisque justo nulla ornare ligula. Quisque mattis eu nisl nec rhoncus. Etiam euismod vulputate lorem, vitae pellentesque est rutrum eget. Fusce mattis scelerisque leo a dapibus. Donec et ornare eros. Suspendisse potenti.\n\nProin vel fringilla nibh, at convallis mi. Donec quis nulla sem. Etiam fermentum pellentesque risus at pellentesque. Proin vestibulum sapien ligula, ac feugiat erat eleifend quis. Morbi eget orci ut sem vestibulum egestas varius vitae lacus. Nulla auctor dui vitae urna aliquam, eget finibus leo scelerisque. Integer quis fermentum augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin pellentesque ipsum eget sapien dictum venenatis.\n\nNunc suscipit lacus nec quam volutpat posuere. Nulla dignissim, urna a cursus fringilla, sapien dolor scelerisque urna, sit amet bibendum sapien ligula sit amet tellus. Vivamus et libero at arcu imperdiet rhoncus. Cras eros nulla, consequat in viverra ut, congue nec sem. Praesent eu dui vulputate, gravida metus eget, lacinia nisi. Nullam commodo metus enim, feugiat faucibus quam mollis id. Nam commodo nisi elit, euismod rhoncus ante ultrices non. In hac habitasse platea dictumst. Vestibulum in sagittis ligula, id porttitor est. Donec hendrerit, urna id tempor elementum, ligula justo tincidunt libero, vitae tempor neque enim vel dui. Praesent ultrices placerat auctor.",
+    "image": "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=900&q=80",
+    "author": "MKY Grup Destek Ekibi",
+    "tags": [
+      "VPS nedir",
+      "VDS nedir",
+      "Sunucu Farkları",
+      "Hosting Seçimi",
+      "KVM Sanallaştırma",
+      "Bulut Sunucu",
+      "Weta Technology",
+      "Sunucu Performansı"
+    ],
+    "categoryId": "1770844531911",
+    "isPublished": false,
+    "id": "1770844688119"
   }
 ]

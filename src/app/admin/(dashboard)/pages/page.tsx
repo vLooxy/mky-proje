@@ -75,7 +75,7 @@ export default async function AdminPagesList() {
                             {pages.length === 0 && (
                                 <tr>
                                     <td colSpan={5} className="p-8 text-center text-slate-500">
-                                        Henüz hiç sayfa oluşturulmamış. "Yeni Sayfa Oluştur" butonu ile başlayın.
+                                        Henüz hiç sayfa oluşturulmamış. &quot;Yeni Sayfa Oluştur&quot; butonu ile başlayın.
                                     </td>
                                 </tr>
                             )}
