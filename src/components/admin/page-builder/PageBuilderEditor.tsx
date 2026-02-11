@@ -114,6 +114,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
     const [openCategory, setOpenCategory] = useState<string | null>('heroes');
     const [isPublished, setIsPublished] = useState(page.isPublished); // New state
     const [mounted, setMounted] = useState(false);
+    const [showComponentsPanel, setShowComponentsPanel] = useState(false); // Mobile state
 
     useEffect(() => {
         setMounted(true);
@@ -170,12 +171,69 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
     const selectedSection = sections.find(s => s.id === selectedSectionId);
 
     return (
-        <div className="flex h-[calc(100vh-100px)] gap-4">
-            {/* Sol Panel: Araçlar */}
-            <div className="w-64 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col overflow-y-auto">
-                <h3 className="font-semibold mb-4 text-sm text-gray-500 uppercase">Bileşenler</h3>
+        <div className="flex h-[calc(100vh-100px)] gap-4 relative">
+            {/* Mobile Toolbar (Bottom) */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center z-50">
+                <button
+                    onClick={() => {
+                        setShowComponentsPanel(true);
+                        if (selectedSectionId) setSelectedSectionId(null);
+                    }}
+                    className="flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300"
+                >
+                    <span className="material-symbols-outlined">add_circle</span>
+                    <span className="text-[10px] font-bold">Ekle</span>
+                </button>
 
-                <div className="space-y-2">
+                <div className="flex items-center gap-4">
+                    <span className="text-xs font-bold text-gray-600 dark:text-gray-300">
+                        {isPublished ? <span className="text-emerald-500">YAYINDA</span> : <span className="text-gray-400">TASLAK</span>}
+                    </span>
+                    <button
+                        onClick={handleSave}
+                        disabled={isSaving}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg disabled:opacity-50"
+                    >
+                        {isSaving ? '...' : 'Kaydet'}
+                    </button>
+                </div>
+
+                <button
+                    onClick={() => {
+                        if (selectedSectionId) {
+                            // Already open, maybe close? Or just focus?
+                        } else {
+                            alert("Düzenlemek için bir bölüm seçin.");
+                        }
+                    }}
+                    className={`flex flex-col items-center gap-1 ${selectedSectionId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'}`}
+                >
+                    <span className="material-symbols-outlined">edit</span>
+                    <span className="text-[10px] font-bold">Düzenle</span>
+                </button>
+            </div>
+
+            {/* Sol Panel: Araçlar */}
+            <div className={`
+                width-transition
+                fixed inset-y-0 left-0 z-40 w-80 bg-white dark:bg-gray-800 p-4 shadow-2xl transform transition-transform duration-300 ease-in-out
+                lg:relative lg:transform-none lg:w-64 lg:shadow-sm lg:border lg:border-gray-200 lg:dark:border-gray-700 lg:flex lg:flex-col lg:h-full lg:z-0
+                ${showComponentsPanel ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} 
+                flex flex-col
+            `}>
+                {/* Mobile Header for Panel */}
+                <div className="lg:hidden flex justify-between items-center mb-4 pb-4 border-b">
+                    <h3 className="font-bold text-lg">Bileşenler</h3>
+                    <button onClick={() => setShowComponentsPanel(false)} className="p-2 bg-gray-100 rounded-full">
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                {/* ... (Rest of Left Panel Content) ... */}
+                {/* Refactoring to use new state in next step. For now, pasting standard layout with mobile classes. */}
+                <h3 className="font-semibold mb-4 text-sm text-gray-500 uppercase hidden lg:block">Bileşenler</h3>
+
+                <div className="space-y-2 overflow-y-auto flex-1">
                     {COMPONENT_CATEGORIES.map((category) => (
                         <div key={category.id} className="border border-gray-100 dark:border-gray-700/50 rounded-lg overflow-hidden">
                             <button
@@ -195,7 +253,10 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                                     {category.items.map((item) => (
                                         <button
                                             key={item.type}
-                                            onClick={() => handleAddSection(item.type)}
+                                            onClick={() => {
+                                                handleAddSection(item.type);
+                                                // On mobile, close panel after adding
+                                            }}
                                             className="w-full p-2 text-left hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-700 dark:text-gray-300 rounded-md flex gap-2 items-center text-sm transition-colors group"
                                         >
                                             <span className="text-base group-hover:scale-110 transition-transform">{item.icon}</span>
@@ -208,7 +269,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                     ))}
                 </div>
 
-                <div className="mt-auto pt-4 space-y-4">
+                <div className="mt-auto pt-4 space-y-4 hidden lg:block">
                     <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-700">
                         <span className="text-xs font-bold text-gray-600 dark:text-gray-300">
                             DURUM: {isPublished ? <span className="text-emerald-500">YAYINDA</span> : <span className="text-gray-400">TASLAK</span>}
@@ -235,20 +296,27 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
             </div>
 
             {/* Orta Panel: Canvas */}
-            <div className="flex-1 bg-gray-100 dark:bg-gray-900/50 rounded-lg p-8 overflow-y-auto border border-dashed border-gray-300 dark:border-gray-700 relative">
-                <div className="max-w-4xl mx-auto bg-white dark:bg-black min-h-full shadow-lg rounded-sm">
+            <div className="flex-1 bg-gray-100 dark:bg-gray-900/50 rounded-lg p-2 lg:p-8 overflow-y-auto border border-dashed border-gray-300 dark:border-gray-700 relative pb-24 lg:pb-8">
+                <div className="max-w-4xl mx-auto bg-white dark:bg-black min-h-full shadow-lg rounded-sm transition-all duration-300">
                     {mounted ? (
                         <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={sections} strategy={verticalListSortingStrategy}>
-                                {sections.map((section) => (
-                                    <SortableSection
-                                        key={section.id}
-                                        section={section}
-                                        isSelected={section.id === selectedSectionId}
-                                        onClick={() => setSelectedSectionId(section.id)}
-                                        onDelete={() => handleDeleteSection(section.id)}
-                                    />
-                                ))}
+                                {sections.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+                                        <span className="material-symbols-outlined text-4xl mb-2">post_add</span>
+                                        <p>Bileşen eklemek için {window.innerWidth < 1024 ? '"Ekle" butonunu kullanın' : 'sol paneli kullanın'}.</p>
+                                    </div>
+                                ) : (
+                                    sections.map((section) => (
+                                        <SortableSection
+                                            key={section.id}
+                                            section={section}
+                                            isSelected={section.id === selectedSectionId}
+                                            onClick={() => setSelectedSectionId(section.id)}
+                                            onDelete={() => handleDeleteSection(section.id)}
+                                        />
+                                    ))
+                                )}
                             </SortableContext>
                         </DndContext>
                     ) : (
@@ -258,115 +326,145 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
             </div>
 
             {/* Sağ Panel: Özellikler */}
-            {selectedSection && (
-                <div className="w-80 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-y-auto">
-                    <h3 className="font-semibold mb-4 text-sm text-gray-500 uppercase border-b pb-2">Düzenle: {selectedSection.type}</h3>
+            <div className={`
+                fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 p-4 shadow-2xl transform transition-transform duration-300 ease-in-out
+                lg:relative lg:transform-none lg:w-80 lg:shadow-sm lg:border lg:border-gray-200 lg:dark:border-gray-700 lg:block
+                ${selectedSectionId ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
+                ${!selectedSectionId && 'lg:hidden'} 
+            `}>
 
-                    <div className="space-y-4">
-                        {/* Dynamic Form Fields based on content keys */}
-                        {Object.keys(selectedSection.content).map((key) => {
-                            const value = selectedSection.content[key];
+                {selectedSection ? (
+                    <>
+                        <div className="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 className="font-semibold text-sm text-gray-500 uppercase">Düzenle: {selectedSection.type}</h3>
+                            <button onClick={() => setSelectedSectionId(null)} className="lg:hidden p-1 bg-gray-100 rounded-full">
+                                <span className="material-symbols-outlined text-sm">close</span>
+                            </button>
+                        </div>
 
-                            // Array handling (Lists)
-                            if (Array.isArray(value)) {
-                                return (
-                                    <div key={key}>
-                                        <label className="block text-xs font-semibold mb-2 uppercase text-gray-400">{key}</label>
-                                        <div className="space-y-2">
-                                            {value.map((item: any, i: number) => (
-                                                <div key={i} className="p-2 border rounded bg-gray-50 dark:bg-gray-900 text-xs">
-                                                    {typeof item === 'object' ? (
-                                                        // Object in Array
-                                                        <div className="space-y-2">
-                                                            {Object.keys(item).map(subKey => (
-                                                                <div key={subKey}>
-                                                                    <span className="text-[10px] text-gray-400 uppercase">{subKey}</span>
-                                                                    <input
-                                                                        className="w-full bg-transparent border-b border-gray-200 dark:border-gray-700 focus:outline-none"
-                                                                        value={item[subKey]} // Simple edit only for string props
-                                                                        onChange={(e) => {
-                                                                            const newItems = [...value];
-                                                                            newItems[i] = { ...newItems[i], [subKey]: e.target.value };
-                                                                            updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        // String in Array
-                                                        <input
-                                                            className="w-full bg-transparent focus:outline-none"
-                                                            value={item}
-                                                            onChange={(e) => {
-                                                                const newItems = [...value];
-                                                                newItems[i] = e.target.value;
+                        <div className="space-y-4 overflow-y-auto h-[calc(100%-60px)]">
+                            {/* Dynamic Form Fields based on content keys */}
+                            {Object.keys(selectedSection.content).map((key) => {
+                                const value = selectedSection.content[key];
+
+                                // Array handling (Lists)
+                                if (Array.isArray(value)) {
+                                    return (
+                                        <div key={key}>
+                                            <label className="block text-xs font-semibold mb-2 uppercase text-gray-400">{key}</label>
+                                            <div className="space-y-2">
+                                                {value.map((item: any, i: number) => (
+                                                    <div key={i} className="p-2 border rounded bg-gray-50 dark:bg-gray-900 text-xs">
+                                                        {typeof item === 'object' ? (
+                                                            // Object in Array
+                                                            <div className="space-y-2">
+                                                                {Object.keys(item).map(subKey => (
+                                                                    <div key={subKey}>
+                                                                        <span className="text-[10px] text-gray-400 uppercase">{subKey}</span>
+                                                                        <input
+                                                                            className="w-full bg-transparent border-b border-gray-200 dark:border-gray-700 focus:outline-none"
+                                                                            value={item[subKey]} // Simple edit only for string props
+                                                                            onChange={(e) => {
+                                                                                const newItems = [...value];
+                                                                                newItems[i] = { ...newItems[i], [subKey]: e.target.value };
+                                                                                updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            // String in Array
+                                                            <input
+                                                                className="w-full bg-transparent focus:outline-none"
+                                                                value={item}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...value];
+                                                                    newItems[i] = e.target.value;
+                                                                    updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
+                                                                }}
+                                                            />
+                                                        )}
+                                                        <button
+                                                            onClick={() => {
+                                                                const newItems = value.filter((_: any, index: number) => index !== i);
                                                                 updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
                                                             }}
-                                                        />
-                                                    )}
-                                                    <button
-                                                        onClick={() => {
-                                                            const newItems = value.filter((_: any, index: number) => index !== i);
-                                                            updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
-                                                        }}
-                                                        className="mt-2 w-full text-[10px] text-red-500 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-200 rounded py-1 flex items-center justify-center gap-1 transition-all"
-                                                    >
-                                                        <span>🗑️</span> Sil
-                                                    </button>
-                                                </div>
-                                            ))}
-                                            <button
-                                                className="text-xs text-blue-500 hover:underline"
-                                                onClick={() => {
-                                                    // Add empty item structure based on existing or default
-                                                    const template = value.length > 0 ? (typeof value[0] === 'object' ? Object.keys(value[0]).reduce((acc, k) => ({ ...acc, [k]: '' }), {}) : "") : "";
-                                                    updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: [...value, template] });
-                                                }}
-                                            >
-                                                + Yeni Ekle
-                                            </button>
+                                                            className="mt-2 w-full text-[10px] text-red-500 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-200 rounded py-1 flex items-center justify-center gap-1 transition-all"
+                                                        >
+                                                            <span>🗑️</span> Sil
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                <button
+                                                    className="text-xs text-blue-500 hover:underline"
+                                                    onClick={() => {
+                                                        // Add empty item structure based on existing or default
+                                                        const template = value.length > 0 ? (typeof value[0] === 'object' ? Object.keys(value[0]).reduce((acc, k) => ({ ...acc, [k]: '' }), {}) : "") : "";
+                                                        updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: [...value, template] });
+                                                    }}
+                                                >
+                                                    + Yeni Ekle
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            }
+                                    )
+                                }
 
-                            // Boolean Toggle
-                            if (typeof value === 'boolean') {
+                                // Boolean Toggle
+                                if (typeof value === 'boolean') {
+                                    return (
+                                        <div key={key} className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                checked={value}
+                                                onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.checked })}
+                                            />
+                                            <label className="text-sm font-medium">{key}</label>
+                                        </div>
+                                    );
+                                }
+
+                                // Text/Textarea
                                 return (
-                                    <div key={key} className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={value}
-                                            onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.checked })}
-                                        />
-                                        <label className="text-sm font-medium">{key}</label>
+                                    <div key={key}>
+                                        <label className="block text-xs font-semibold mb-1 uppercase text-gray-400">{key}</label>
+                                        {String(value).length > 50 || key === 'html' || key === 'description' ? (
+                                            <textarea
+                                                value={value}
+                                                onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.value })}
+                                                className="w-full p-2 border rounded text-sm h-24 dark:bg-gray-900 dark:border-gray-700"
+                                            />
+                                        ) : (
+                                            <input
+                                                value={value}
+                                                onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.value })}
+                                                className="w-full p-2 border rounded text-sm dark:bg-gray-900 dark:border-gray-700"
+                                            />
+                                        )}
                                     </div>
                                 );
-                            }
-
-                            // Text/Textarea
-                            return (
-                                <div key={key}>
-                                    <label className="block text-xs font-semibold mb-1 uppercase text-gray-400">{key}</label>
-                                    {String(value).length > 50 || key === 'html' || key === 'description' ? (
-                                        <textarea
-                                            value={value}
-                                            onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.value })}
-                                            className="w-full p-2 border rounded text-sm h-24 dark:bg-gray-900 dark:border-gray-700"
-                                        />
-                                    ) : (
-                                        <input
-                                            value={value}
-                                            onChange={(e) => updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: e.target.value })}
-                                            className="w-full p-2 border rounded text-sm dark:bg-gray-900 dark:border-gray-700"
-                                        />
-                                    )}
-                                </div>
-                            );
-                        })}
+                            })}
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-center text-gray-400 mt-20">
+                        <span className="material-symbols-outlined text-4xl mb-2">edit_off</span>
+                        <p>Düzenlemek için bir bölüm seçin.</p>
                     </div>
-                </div>
+                )}
+            </div>
+
+            {/* Overlay for Mobile Drawers */}
+            {(selectedSectionId || false) && (
+                <div
+                    onClick={() => {
+                        // Close all panels
+                        setSelectedSectionId(null);
+                    }}
+                    className="lg:hidden fixed inset-0 bg-black/50 z-30"
+                    style={{ display: selectedSectionId ? 'block' : 'none' }}
+                />
             )}
         </div>
     );

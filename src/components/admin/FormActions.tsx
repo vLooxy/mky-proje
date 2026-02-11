@@ -58,9 +58,9 @@ export default function FormActions({ form }: FormActionsProps) {
 
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200 text-left">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200 text-left flex flex-col max-h-[90vh]">
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 shrink-0">
                             <h3 className="font-bold text-lg text-slate-900 dark:text-white">Başvuru Detayı</h3>
                             <button
                                 onClick={() => setShowModal(false)}
@@ -71,7 +71,7 @@ export default function FormActions({ form }: FormActionsProps) {
                         </div>
 
                         {/* Body */}
-                        <div className="p-6 space-y-4">
+                        <div className="p-6 space-y-4 overflow-y-auto">
                             <div>
                                 <label className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1 block">Ad / Firma</label>
                                 <p className="text-slate-900 dark:text-white font-medium">{form.name}</p>
@@ -105,7 +105,7 @@ export default function FormActions({ form }: FormActionsProps) {
                         </div>
 
                         {/* Footer */}
-                        <div className="flex justify-end p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <div className="flex justify-end p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 shrink-0">
                             <button
                                 onClick={() => setShowModal(false)}
                                 className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors font-medium text-sm"

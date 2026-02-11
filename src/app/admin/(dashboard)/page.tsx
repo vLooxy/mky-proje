@@ -21,7 +21,7 @@ export default async function AdminDashboard() {
     const recentForms = [...forms].sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5); // eslint-disable-line @typescript-eslint/no-explicit-any
 
     return (
-        <div className="p-6 lg:p-10">
+        <div className="p-4 md:p-6 lg:p-10">
             <div className="max-w-7xl mx-auto flex flex-col gap-8">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
