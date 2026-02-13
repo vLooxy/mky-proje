@@ -74,7 +74,7 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
     },
     {
         id: 'modern',
-        title: ' ✨ Yeni Modern Bileşenler',
+        title: 'Yeni Modern Bileşenler',
         items: [
             { type: 'faq-accordion', label: 'S.S.S. (Accordion)', icon: '❓' },
             { type: 'comparison-table', label: 'Karşılaştırma Tablosu', icon: '⚖️' },

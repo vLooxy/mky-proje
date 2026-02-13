@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSettings } from "@/actions/settings-actions";
 import { Settings } from "@/types/settings";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 export async function Footer() {
     const settings = await getSettings() as Settings;
@@ -22,16 +23,31 @@ export async function Footer() {
                         </p>
                         {/* Social Links from Settings */}
                         <div className="flex gap-4 mt-2">
-                            {settings?.social && Object.entries(settings.social).map(([key, url]) => (
-                                (url as string).length > 2 && (
-                                    <a key={key} href={url as string} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
-                                        {/* Simple mapping for known icons, fallback to link icon */}
-                                        <i className={`fab fa-${key} text-lg`}></i>
-                                        {/* Note: If font-awesome is not available, use material symbols or text */}
+                            {settings?.social && Object.entries(settings.social).map(([key, url]) => {
+                                if (!url || (url as string).length < 2) return null;
+
+                                const iconMap: Record<string, React.ReactNode> = {
+                                    facebook: <FaFacebook className="text-xl" />,
+                                    twitter: <FaTwitter className="text-xl" />,
+                                    instagram: <FaInstagram className="text-xl" />,
+                                    linkedin: <FaLinkedin className="text-xl" />,
+                                    youtube: <FaYoutube className="text-xl" />,
+                                };
+
+                                return (
+                                    <a
+                                        key={key}
+                                        href={url as string}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-gray-400 hover:text-primary transition-colors hover:scale-110 transform duration-200"
+                                        title={key.charAt(0).toUpperCase() + key.slice(1)}
+                                    >
+                                        {iconMap[key.toLowerCase()] || <span className="capitalize text-sm font-medium">{key}</span>}
                                         <span className="sr-only capitalize">{key}</span>
                                     </a>
-                                )
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 

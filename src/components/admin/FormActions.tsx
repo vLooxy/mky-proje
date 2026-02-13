@@ -10,7 +10,7 @@ type FormActionsProps = {
         company: string;
         service: string;
         message: string;
-        date: string;
+        date: string | Date;
         status: string;
     };
 };

@@ -1,13 +1,10 @@
 import { PageRenderer } from "@/components/PageRenderer";
 import { prisma } from "@/lib/db";
-import { incrementVisit } from "@/actions/analytics-actions";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function Home() {
-  await incrementVisit(); // Track visit
-
   const page = await prisma.page.findUnique({
     where: { slug: 'home', isPublished: true },
     include: { sections: { orderBy: { order: "asc" } } }
@@ -27,6 +24,7 @@ export default async function Home() {
 
   return (
     <main>
+      <AnalyticsTracker />
       <PageRenderer sections={page.sections} />
     </main>
   );

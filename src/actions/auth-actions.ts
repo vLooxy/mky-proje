@@ -2,6 +2,8 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/db";
+import bcrypt from "bcryptjs";
 
 // Simple in-memory rate limiting (Note: This resets on server restart/redeploy)
 // For production with multiple replicas, use Redis or Database.
@@ -17,17 +19,11 @@ interface RateLimitData {
 const rateLimits = new Map<string, RateLimitData>();
 
 export async function login(prevState: unknown, formData: FormData) {
-    // In a real app we'd get the real IP, but in Server Actions headers() might be needed
-    // For simplicity in this demo, we'll use a placeholder or try to get it if possible.
-    // Since we can't easily get client IP in standard Server Action without headers(),
-    // we'll rely on the user input (username) as the key for rate limiting to prevent brute force on a specific account.
-    // AND/OR we can use a hidden field for client-side fingerprinting if needed, but username is okay for now.
-
-    const username = formData.get("username") as string;
+    const username = formData.get("username") as string; // acting as email for now if needed, or we adapt
     const password = formData.get("password") as string;
 
     // Rate Limit Check
-    const key = `auth_${username}`; // Key by username to prevent brute forcing 'admin'
+    const key = `auth_${username}`;
     const now = Date.now();
     const limitData = rateLimits.get(key) || { attempts: 0, blockExpires: 0 };
 
@@ -36,45 +32,94 @@ export async function login(prevState: unknown, formData: FormData) {
         return { success: false, message: `Çok fazla başarısız deneme. Lütfen ${remainingMins} dakika sonra tekrar deneyin.` };
     }
 
-    // Credentials from Env
+    // Credentials from Env (Fallback/Seed)
     const ADMIN_USER = process.env.ADMIN_USER;
     const ADMIN_PASS = process.env.ADMIN_PASS;
 
-    if (!ADMIN_USER || !ADMIN_PASS) {
-        return { success: false, message: "Sunucu hatası: Giriş bilgileri yapılandırılmamış." };
-    }
-
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-        // Success - Reset rate limit
-        rateLimits.delete(key);
-
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + 1); // 1 day
-
-        (await cookies()).set("admin_session", "true", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/",
-            expires: expirationDate,
+    try {
+        // 1. Try to find user in DB
+        // We assume username field in login form is actually email or username. 
+        // Let's check against email first, then name? Or just assume it's one.
+        // For existing env usage, username was likely 'admin'.
+        let user = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email: username },
+                    { name: username }
+                ]
+            }
         });
 
-        return { success: true };
-    } else {
-        // Failure - Increment rate limit
-        limitData.attempts += 1;
+        // 2. Fallback: If no users exist AT ALL, and credentials match env, create the admin user.
+        if (!user) {
+            const userCount = await prisma.user.count();
+            if (userCount === 0 && ADMIN_USER && ADMIN_PASS && username === ADMIN_USER && password === ADMIN_PASS) {
+                // Auto-seed admin
+                const hashedPassword = await bcrypt.hash(ADMIN_PASS, 10);
+                user = await prisma.user.create({
+                    data: {
+                        name: "Yönetici Mod",
+                        email: "admin@mkygrup.com", // Default email
+                        password: hashedPassword,
+                        role: "ADMIN",
+                        image: undefined
+                    }
+                });
+            }
+        }
 
+        if (user) {
+            // Check password
+            const passwordMatch = await bcrypt.compare(password, user.password);
+
+            if (passwordMatch) {
+                // Success - Reset rate limit
+                rateLimits.delete(key);
+
+                const expirationDate = new Date();
+                expirationDate.setDate(expirationDate.getDate() + 1); // 1 day
+
+                // Store user info in session/cookie if needed, or just the flag
+                const cookieStore = await cookies();
+                cookieStore.set("admin_session", "true", {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict",
+                    path: "/",
+                    expires: expirationDate,
+                });
+
+                // You might want to store user ID too
+                cookieStore.set("admin_user_id", user.id, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict",
+                    path: "/",
+                    expires: expirationDate,
+                });
+
+                return { success: true };
+            }
+        }
+
+        // Failure
+        limitData.attempts += 1;
         if (limitData.attempts >= MAX_ATTEMPTS) {
             limitData.blockExpires = now + RATELIMIT_WINDOW;
         }
-
         rateLimits.set(key, limitData);
 
         return { success: false, message: `Geçersiz kullanıcı adı veya şifre. (${MAX_ATTEMPTS - limitData.attempts} hak kaldı)` };
+
+    } catch (error) {
+        console.error("Login error:", error);
+        return { success: false, message: "Giriş işlemi sırasında bir hata oluştu." };
     }
 }
 
 export async function logout() {
-    (await cookies()).delete("admin_session");
+    const cookieStore = await cookies();
+    cookieStore.delete("admin_session");
+    cookieStore.delete("admin_user_id");
     redirect("/admin/login");
 }

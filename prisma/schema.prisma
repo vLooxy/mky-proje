@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Page {
@@ -35,5 +35,16 @@ model Settings {
   id        String   @id @default(cuid())
   key       String   @unique
   value     String   // JSON string
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("EDITOR") // ADMIN, EDITOR
+  image     String?
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -49,7 +49,7 @@ export function Header() {
 
     return (
         <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-            <header className="relative w-full max-w-5xl rounded-full bg-slate-800/60 dark:bg-slate-900/80 backdrop-blur-md border border-white/10 shadow-xl px-6 py-2 flex items-center justify-between transition-all duration-300">
+            <header className="relative w-full max-w-5xl rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-gray-200 dark:border-white/10 shadow-xl px-6 py-2 flex items-center justify-between transition-all duration-300">
                 {/* Logo Section */}
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export function Header() {
                                     className={`flex items-center gap-1 text-sm font-medium transition-colors ${(pathname === item.href && !item.hasDropdown) ||
                                         (item.hasDropdown && item.dropdownItems?.some(sub => sub.href === pathname))
                                         ? "text-[#4dabf7]"
-                                        : "text-gray-300 hover:text-white"
+                                        : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                                         }`}
                                 >
                                     {item.name}
@@ -109,7 +109,7 @@ export function Header() {
                     {/* Theme Toggle */}
                     <button
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        className="flex p-2 rounded-full hover:bg-white/10 transition-colors text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"
+                        className="flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Temayı değiştir"
                     >
                         {mounted && theme === "dark" ? (
