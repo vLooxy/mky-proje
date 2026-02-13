@@ -2,27 +2,24 @@ import Link from "next/link";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 export interface HeroSectionProps {
-    content?: {
-        badge?: string;
-        title_line1?: string;
-        title_highlight?: string;
-        description?: string;
-        button_primary?: string;
-        button_secondary?: string;
-        backgroundImage?: string;
-    };
+    badge?: string;
+    title_line1?: string;
+    title_highlight?: string;
+    description?: string;
+    button_primary?: string;
+    button_secondary?: string;
+    backgroundImage?: string;
 }
 
-export function HeroSection({ content }: HeroSectionProps) {
-    const {
-        badge = "ISO 9001 Sertifikalı Güvenlik",
-        title_line1 = "MÜKEMMELİYET",
-        title_highlight = "MÜHENDİSLİĞİ",
-        description = "Modern endüstriler için riskleri minimize ediyor, verimliliği maksimize ediyoruz. Güvenlik bir seçenek değil, temeldir.",
-        button_primary = "Danışmanlık Alın",
-        button_secondary = "Hizmetlerimiz",
-        backgroundImage = "https://images.pexels.com/photos/1038935/pexels-photo-1038935.jpeg"
-    } = content || {};
+export function HeroSection({
+    badge = "ISO 9001 Sertifikalı Güvenlik",
+    title_line1 = "MÜKEMMELİYET",
+    title_highlight = "MÜHENDİSLİĞİ",
+    description = "Modern endüstriler için riskleri minimize ediyor, verimliliği maksimize ediyoruz. Güvenlik bir seçenek değil, temeldir.",
+    button_primary = "Danışmanlık Alın",
+    button_secondary = "Hizmetlerimiz",
+    backgroundImage = "https://images.pexels.com/photos/1038935/pexels-photo-1038935.jpeg"
+}: HeroSectionProps) {
 
     return (
         <section className="relative w-full h-auto min-h-[600px] md:min-h-[750px] flex flex-col justify-start overflow-hidden bg-[#0A1018] pt-40 md:pt-48 pb-24 md:pb-32">

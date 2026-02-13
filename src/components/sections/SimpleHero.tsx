@@ -18,8 +18,16 @@ export function SimpleHero({ title, subtitle, buttonText, buttonLink, background
                 />
             )}
             <div className="relative z-10 max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">{title}</h1>
-                {subtitle && <p className="text-xl text-slate-300 mb-8">{subtitle}</p>}
+                <h1
+                    className="text-4xl md:text-6xl font-bold mb-6 tracking-tight"
+                    dangerouslySetInnerHTML={{ __html: title }}
+                />
+                {subtitle && (
+                    <div
+                        className="text-xl text-slate-300 mb-8"
+                        dangerouslySetInnerHTML={{ __html: subtitle }}
+                    />
+                )}
                 {buttonText && (
                     <a
                         href={buttonLink || '#'}

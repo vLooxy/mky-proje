@@ -25,9 +25,10 @@ export function HomeModernHero({
             </div>
             <div className="z-10 text-center relative mix-blend-multiply dark:mix-blend-normal">
                 <FadeIn delay={100} direction="up">
-                    <h2 className="text-xl md:text-2xl font-bold tracking-[0.2em] text-primary uppercase mb-4">
-                        {smallTitle}
-                    </h2>
+                    <h2
+                        className="text-xl md:text-2xl font-bold tracking-[0.2em] text-primary uppercase mb-4"
+                        dangerouslySetInnerHTML={{ __html: smallTitle }}
+                    />
                 </FadeIn>
                 <FadeIn delay={300} direction="up">
                     <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-slate-900 dark:text-white leading-[0.9] tracking-tighter">
@@ -37,9 +38,10 @@ export function HomeModernHero({
                     </h1>
                 </FadeIn>
                 <FadeIn delay={500} direction="up">
-                    <p className="mt-8 text-lg max-w-2xl mx-auto text-slate-600 dark:text-slate-400 font-medium">
-                        {description}
-                    </p>
+                    <div
+                        className="mt-8 text-lg max-w-2xl mx-auto text-slate-600 dark:text-slate-400 font-medium"
+                        dangerouslySetInnerHTML={{ __html: description }}
+                    />
                 </FadeIn>
             </div>
         </section>

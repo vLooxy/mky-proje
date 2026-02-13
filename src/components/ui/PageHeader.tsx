@@ -39,15 +39,17 @@ export function PageHeader({
                         </FadeIn>
                     )}
                     <FadeIn direction="up" delay={100}>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
-                            {title}
-                        </h1>
+                        <h1
+                            className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight"
+                            dangerouslySetInnerHTML={{ __html: String(title) }}
+                        />
                     </FadeIn>
                     {description && (
                         <FadeIn direction="up" delay={200}>
-                            <p className="text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl">
-                                {description}
-                            </p>
+                            <div
+                                className="text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl"
+                                dangerouslySetInnerHTML={{ __html: description }}
+                            />
                         </FadeIn>
                     )}
                 </div>

@@ -26,15 +26,18 @@ export function AboutPurpose({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
                     <FadeIn direction="up">
-                        <span className="text-primary font-bold text-sm uppercase tracking-wider mb-2 block">
-                            {subtitle}
-                        </span>
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
-                            {title}
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-400">
-                            {description}
-                        </p>
+                        <span
+                            className="text-primary font-bold text-sm uppercase tracking-wider mb-2 block"
+                            dangerouslySetInnerHTML={{ __html: subtitle }}
+                        />
+                        <h2
+                            className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white leading-tight mb-4"
+                            dangerouslySetInnerHTML={{ __html: title }}
+                        />
+                        <div
+                            className="text-slate-600 dark:text-slate-400"
+                            dangerouslySetInnerHTML={{ __html: description }}
+                        />
                     </FadeIn>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">

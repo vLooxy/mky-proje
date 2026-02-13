@@ -29,9 +29,10 @@ export function BlogHero({
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left">
                 <FadeIn delay={100} direction="up">
-                    <span className="inline-block py-1 px-3 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 border border-blue-500/20">
-                        {badge}
-                    </span>
+                    <span
+                        className="inline-block py-1 px-3 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 border border-blue-500/20"
+                        dangerouslySetInnerHTML={{ __html: badge }}
+                    />
                 </FadeIn>
                 <FadeIn delay={200} direction="up">
                     <h1
@@ -40,9 +41,10 @@ export function BlogHero({
                     />
                 </FadeIn>
                 <FadeIn delay={300} direction="up">
-                    <p className="text-lg md:text-xl text-slate-400 max-w-2xl font-light leading-relaxed">
-                        {description}
-                    </p>
+                    <div
+                        className="text-lg md:text-xl text-slate-400 max-w-2xl font-light leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: description }}
+                    />
                 </FadeIn>
             </div>
         </header>
