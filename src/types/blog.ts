@@ -12,10 +12,10 @@ export interface BlogPost {
     slug: string;
     excerpt: string;
     content: string;
-    image?: string;
+    image?: string | null;
     date: string;
-    author?: string;
+    author?: string | null;
     tags?: string[];
     isPublished?: boolean;
-    categoryId?: string;
+    categoryId?: string | null;
 }

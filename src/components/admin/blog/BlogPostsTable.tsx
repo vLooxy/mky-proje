@@ -2,17 +2,10 @@ import React from 'react';
 import Image from "next/image";
 import { BlogActionButtons } from "@/components/admin/blog/BlogActionButtons";
 
+import { BlogPost } from "@/types/blog";
+
 interface BlogPostsTableProps {
-    posts: {
-        id: string;
-        title: string;
-        slug: string;
-        image?: string | null;
-        categoryId?: string;
-        author?: string;
-        date: string;
-        isPublished?: boolean;
-    }[];
+    posts: BlogPost[];
     categories: {
         id: string;
         name: string;
