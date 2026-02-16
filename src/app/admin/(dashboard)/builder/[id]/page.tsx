@@ -18,7 +18,8 @@ export default async function EditPage({ params }: { params: Promise<{ id: strin
                 <h1 className="text-xl font-bold">Düzenle: {page.title}</h1>
                 <div className="text-sm text-gray-500 font-mono">{page.slug}</div>
             </div>
-            <PageBuilderEditor page={page} />
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <PageBuilderEditor page={page as any} />
         </div>
     );
 }
