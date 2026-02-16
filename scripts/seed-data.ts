@@ -26,7 +26,7 @@ async function main() {
             });
         }
         console.log("Categories migrated.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("No categories.json found or error:", e.message);
     }
 
@@ -62,7 +62,7 @@ async function main() {
             });
         }
         console.log("Blogs migrated.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("No blogs.json found or error:", e.message);
     }
 
@@ -87,7 +87,7 @@ async function main() {
             });
         }
         console.log("Pages migrated.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("No pages.json found or error:", e.message);
     }
 
@@ -110,7 +110,7 @@ async function main() {
             });
         }
         console.log("Settings migrated.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("No settings.json found or error:", e.message);
     }
 
@@ -127,7 +127,7 @@ async function main() {
             });
         }
         console.log("Analytics migrated.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("No analytics.json found or error:", e.message);
     }
 }
