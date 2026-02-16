@@ -1,14 +1,16 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
-
-const DATA_FILE_PATH = path.join(process.cwd(), "src/data/analytics.json");
+import { prisma } from "@/lib/db";
 
 export async function getAnalytics() {
     try {
-        const fileContent = await fs.readFile(DATA_FILE_PATH, "utf-8");
-        return JSON.parse(fileContent);
+        const analytics = await prisma.analytics.findFirst({
+            orderBy: { updatedAt: 'desc' }
+        });
+
+        if (!analytics) return { totalVisits: 0 };
+
+        return { totalVisits: analytics.totalVisits };
     } catch {
         return { totalVisits: 0 };
     }
@@ -16,21 +18,22 @@ export async function getAnalytics() {
 
 export async function incrementVisit() {
     try {
-        // Read current
-        let data = { totalVisits: 0, lastUpdated: "" };
-        try {
-            const fileContent = await fs.readFile(DATA_FILE_PATH, "utf-8");
-            data = JSON.parse(fileContent);
-        } catch { }
+        const analytics = await prisma.analytics.findFirst({
+            orderBy: { updatedAt: 'desc' }
+        });
 
-        // Increment
-        data.totalVisits += 1;
-        data.lastUpdated = new Date().toISOString();
-
-        // Write back
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
-
-        return data.totalVisits;
+        if (analytics) {
+            const updated = await prisma.analytics.update({
+                where: { id: analytics.id },
+                data: { totalVisits: analytics.totalVisits + 1 }
+            });
+            return updated.totalVisits;
+        } else {
+            const created = await prisma.analytics.create({
+                data: { totalVisits: 1 }
+            });
+            return created.totalVisits;
+        }
     } catch (error) {
         console.error("Error incrementing visit:", error);
         return 0;

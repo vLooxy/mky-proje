@@ -17,6 +17,7 @@ model Page {
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  contentJson String?  // Stores raw JSON from builder
   sections    Section[]
 }
 
@@ -70,7 +71,22 @@ model Blog {
   author      String?
   tags        String[]
   categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id    String @id @default(cuid())
+  name  String
+  slug  String @unique
+  color String
+  blogs Blog[]
+}
+
+model Analytics {
+  id          String   @id @default(cuid())
+  totalVisits Int      @default(0)
   updatedAt   DateTime @updatedAt
 }
