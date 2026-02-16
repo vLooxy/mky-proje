@@ -5,14 +5,14 @@ import { ComponentType } from 'react';
 const SectionLoading = () => <div className="w-full h-32 animate-pulse bg-slate-100 dark:bg-slate-800 rounded-lg my-8" />;
 
 // Helper for cleaner dynamic imports
-const dynamicSection = (importFunc: () => Promise<any>, componentName?: string) => {
+const dynamicSection = (importFunc: () => Promise<any>, componentName?: string) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     return dynamic(
         () => importFunc().then(mod => componentName ? mod[componentName] : mod.default || mod),
         { loading: SectionLoading }
     );
 };
 
-export const SECTION_REGISTRY: Record<string, ComponentType<any>> = {
+export const SECTION_REGISTRY: Record<string, ComponentType<any>> = { // eslint-disable-line @typescript-eslint/no-explicit-any
     // --- HOME PAGE SPECIFIC COMPONENTS ---
     'home-hero': dynamicSection(() => import('@/components/features/home/HeroSection'), 'HeroSection'),
     'home-stats': dynamicSection(() => import('@/components/features/home/StatsSection'), 'StatsSection'),

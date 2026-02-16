@@ -66,7 +66,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
 
                 {section.type === 'home-stats' && (
                     <div className="grid grid-cols-4 gap-2 bg-white dark:bg-gray-800 p-4 rounded border-b">
-                        {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                        {(section.content.items as { icon: string; value: string; subLabel: string }[] || []).map((item, i) => (
                             <div key={i} className="text-center p-2 bg-gray-50 dark:bg-gray-900 rounded">
                                 <span className="material-symbols-outlined text-blue-500 mb-1">{item.icon}</span>
                                 <div className="text-lg font-black text-slate-800 dark:text-white leading-none">{item.value}</div>
@@ -83,7 +83,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white">{section.content.title}</h2>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { icon: string; title: string; description: string }[] || []).map((item, i) => (
                                 <div key={i} className="bg-gray-50 dark:bg-gray-900 p-4 rounded border dark:border-gray-700 hover:border-blue-500/50 transition-colors">
                                     <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded flex items-center justify-center text-blue-600 mb-3">
                                         <span className="material-symbols-outlined">{item.icon}</span>
@@ -105,7 +105,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             </div>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { image: string; title: string; location: string }[] || []).map((item, i) => (
                                 <div key={i} className="group relative aspect-video bg-gray-800 rounded overflow-hidden">
                                     <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${item.image})` }}></div>
                                     <div className="absolute inset-0 bg-black/40"></div>
@@ -166,7 +166,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-6 bg-white dark:bg-gray-800 rounded border-b border-gray-100 dark:border-gray-700 text-center">
                         <div className="text-[10px] uppercase text-gray-400 mb-3">{section.content.title}</div>
                         <div className="flex justify-center gap-6 opacity-60">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { icon: string; name: string }[] || []).map((item, i) => (
                                 <div key={i} className="flex items-center gap-1 font-bold text-xs text-gray-500">
                                     <span className="material-symbols-outlined text-sm">{item.icon}</span>
                                     {item.name}
@@ -250,7 +250,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             <h2 className="text-2xl font-bold">{section.content.subtitle}</h2>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { title: string; desc: string }[] || []).map((item, i) => (
                                 <div key={i} className="bg-white dark:bg-black p-4 rounded border dark:border-gray-800">
                                     <div className="font-bold text-sm mb-1">★ {item.title}</div>
                                     <div className="text-xs opacity-60 line-clamp-2">{item.desc}</div>
@@ -264,7 +264,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-8 bg-white dark:bg-gray-900 rounded p-4">
                         <h2 className="text-xl font-bold text-center mb-6">{section.content.subtitle}</h2>
                         <div className="space-y-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { year: string; title: string; desc: string }[] || []).map((item, i) => (
                                 <div key={i} className="flex gap-4 items-center">
                                     <div className="text-2xl font-black text-gray-200 dark:text-gray-800">{item.year}</div>
                                     <div>
@@ -286,7 +286,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { image: string; name: string; role: string }[] || []).map((item, i) => (
                                 <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded overflow-hidden">
                                     <div className="h-20 bg-gray-200 dark:bg-gray-700 bg-cover bg-top" style={{ backgroundImage: `url(${item.image})` }}></div>
                                     <div className="p-2">
@@ -325,7 +325,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
 
                 {section.type === 'stats-section' && (
                     <div className="grid grid-cols-4 gap-2 bg-slate-900 text-white p-4 rounded">
-                        {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                        {(section.content.items as { value: string; label: string }[] || []).map((item, i) => (
                             <div key={i} className="text-center">
                                 <div className="text-lg font-bold text-blue-400">{item.value}</div>
                                 <div className="text-[10px] opacity-60">{item.label}</div>
@@ -338,7 +338,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-4 border-b text-center">
                         <div className="text-[10px] uppercase text-gray-400 mb-2">{section.content.title}</div>
                         <div className="flex justify-center gap-4 text-gray-300">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { icon: string }[] || []).map((item, i) => (
                                 <span key={i} className="material-symbols-outlined">{item.icon}</span>
                             ))}
                         </div>
@@ -349,7 +349,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-8 bg-gray-50 dark:bg-gray-800 p-4 rounded">
                         <h2 className="text-xl font-bold mb-4">{section.content.title}</h2>
                         <div className="grid grid-cols-2 gap-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { icon: string; title: string; desc: string }[] || []).map((item, i) => (
                                 <div key={i} className="bg-white dark:bg-gray-700 p-4 rounded shadow-sm">
                                     <span className="material-symbols-outlined text-blue-500 mb-2">{item.icon}</span>
                                     <div className="font-bold text-sm">{item.title}</div>
@@ -369,7 +369,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             </div>
                         </div>
                         <div className="flex gap-4 overflow-x-auto pb-2">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { image: string; title: string; location: string }[] || []).map((item, i) => (
                                 <div key={i} className="min-w-[200px] h-32 bg-gray-800 rounded relative overflow-hidden flex-shrink-0">
                                     <div className="absolute inset-0 bg-cover bg-center opacity-60" style={{ backgroundImage: `url(${item.image})` }}></div>
                                     <div className="absolute bottom-0 left-0 p-2">
@@ -432,7 +432,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-10 bg-gray-50 dark:bg-gray-800 rounded">
                         <h2 className="text-2xl font-bold text-center mb-8">{section.content.title}</h2>
                         <div className="grid grid-cols-3 gap-4 px-4">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { title: string; description: string }[] || []).map((item, i) => (
                                 <div key={i} className="p-4 bg-white dark:bg-gray-700 rounded text-center shadow-sm">
                                     <div className="font-bold">{item.title}</div>
                                     <div className="text-sm text-gray-500 dark:text-gray-300">{item.description}</div>
@@ -449,7 +449,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{section.content.title}</h2>
                         </div>
                         <div className="max-w-2xl mx-auto space-y-3">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { question: string; answer: string }[] || []).map((item, i) => (
                                 <div key={i} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                                     <div className="p-4 bg-gray-50 dark:bg-gray-800 font-bold text-sm flex justify-between items-center cursor-pointer">
                                         {item.question}
@@ -479,7 +479,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                {(section.content.rows || []).map((row: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                                {(section.content.rows as { feature: string; val1: string; val2: string; val3: string }[] || []).map((row, i) => (
                                     <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750">
                                         <td className="p-3 font-medium">{row.feature}</td>
                                         <td className="p-3 text-center">{row.val1}</td>
@@ -495,7 +495,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                 {section.type === 'modern-stats' && (
                     <div className="py-12 bg-slate-900 text-white rounded p-6">
                         <div className="grid grid-cols-4 gap-8">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { value: string; suffix: string; label: string; type: string }[] || []).map((item, i) => (
                                 <div key={i} className="flex flex-col items-center">
                                     {item.type === 'circle' ? (
                                         <div className="w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center text-xl font-bold mb-3 relative">
@@ -526,7 +526,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                     <div className="py-12 bg-gray-50 dark:bg-gray-800 rounded p-6">
                         <h2 className="text-2xl font-bold text-center mb-10">{section.content.title}</h2>
                         <div className="flex gap-6 overflow-x-auto pb-4 px-4 snap-x">
-                            {(section.content.items || []).map((item: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                            {(section.content.items as { image: string; name: string; role: string; quote: string }[] || []).map((item, i) => (
                                 <div key={i} className="min-w-[300px] bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 snap-center">
                                     <div className="flex items-center gap-4 mb-4">
                                         <div className="w-12 h-12 rounded-full bg-gray-200 bg-cover bg-center" style={{ backgroundImage: `url(${item.image})` }}></div>

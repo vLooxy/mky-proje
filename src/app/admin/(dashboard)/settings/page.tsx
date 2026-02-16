@@ -5,6 +5,7 @@ import { getSettings, updateSettings } from "@/actions/settings-actions";
 import { LinkListEditor } from "@/components/admin/settings/LinkListEditor";
 import { cn } from "@/lib/utils";
 import { Settings } from "@/types/settings";
+import defaultSettings from "@/data/settings.json";
 
 export default function AdminSettingsPage() {
     const [settings, setSettings] = useState<Settings | null>(null);
@@ -32,14 +33,14 @@ export default function AdminSettingsPage() {
             return {
                 ...prev,
                 [section]: {
-                    ...prev[section] as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+                    ...prev[section] as Record<string, string>,
                     [key]: value
                 }
             };
         });
     };
 
-    const handleObjectChange = (section: keyof Settings, newData: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const handleObjectChange = (section: keyof Settings, newData: unknown) => {
         setSettings((prev) => {
             if (!prev) return null;
             return {
@@ -52,7 +53,7 @@ export default function AdminSettingsPage() {
     const handleSave = () => {
         if (!settings) return;
         startTransition(async () => {
-            const result = await updateSettings(settings as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+            const result = await updateSettings(settings as unknown as typeof defaultSettings);
             if (result.success) {
                 alert("Ayarlar başarıyla kaydedildi!");
             } else {
@@ -253,7 +254,7 @@ export default function AdminSettingsPage() {
                                                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-admin-bg-dark px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                                                     value={settings.theme?.fontDisplay || 'Inter'}
                                                     onChange={(e) => {
-                                                        const newTheme = { ...settings.theme, fontDisplay: e.target.value } as any;
+                                                        const newTheme = { ...settings.theme, fontDisplay: e.target.value };
                                                         handleObjectChange('theme', newTheme);
                                                     }}
                                                 >
@@ -271,7 +272,7 @@ export default function AdminSettingsPage() {
                                                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-admin-bg-dark px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                                                     value={settings.theme?.fontBody || 'Inter'}
                                                     onChange={(e) => {
-                                                        const newTheme = { ...settings.theme, fontBody: e.target.value } as any;
+                                                        const newTheme = { ...settings.theme, fontBody: e.target.value };
                                                         handleObjectChange('theme', newTheme);
                                                     }}
                                                 >
@@ -310,7 +311,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         light: { ...settings.theme?.colors?.light, primary: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -331,7 +332,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         light: { ...settings.theme?.colors?.light, secondary: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -352,7 +353,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         light: { ...settings.theme?.colors?.light, background: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -373,7 +374,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         light: { ...settings.theme?.colors?.light, surface: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -394,7 +395,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         light: { ...settings.theme?.colors?.light, text: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -411,7 +412,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
                                                             value={settings.theme?.colors?.light?.success || '#22c55e'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, success: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, success: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -421,7 +422,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
                                                             value={settings.theme?.colors?.light?.error || '#ef4444'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, error: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, error: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -431,7 +432,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
                                                             value={settings.theme?.colors?.light?.warning || '#f59e0b'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, warning: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, warning: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -441,7 +442,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
                                                             value={settings.theme?.colors?.light?.info || '#3b82f6'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, info: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, info: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -472,7 +473,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         dark: { ...settings.theme?.colors?.dark, primary: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -493,7 +494,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         dark: { ...settings.theme?.colors?.dark, secondary: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -514,7 +515,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         dark: { ...settings.theme?.colors?.dark, background: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -535,7 +536,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         dark: { ...settings.theme?.colors?.dark, surface: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -556,7 +557,7 @@ export default function AdminSettingsPage() {
                                                                         ...settings.theme?.colors,
                                                                         dark: { ...settings.theme?.colors?.dark, text: e.target.value }
                                                                     }
-                                                                } as any;
+                                                                } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -573,7 +574,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
                                                             value={settings.theme?.colors?.dark?.success || '#22c55e'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, success: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, success: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -583,7 +584,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
                                                             value={settings.theme?.colors?.dark?.error || '#ef4444'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, error: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, error: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -593,7 +594,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
                                                             value={settings.theme?.colors?.dark?.warning || '#f59e0b'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, warning: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, warning: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -603,7 +604,7 @@ export default function AdminSettingsPage() {
                                                         <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
                                                             value={settings.theme?.colors?.dark?.info || '#3b82f6'}
                                                             onChange={(e) => {
-                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, info: e.target.value } } } as any;
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, info: e.target.value } } } as unknown as Settings;
                                                                 handleObjectChange('theme', newTheme);
                                                             }}
                                                         />
@@ -632,7 +633,7 @@ export default function AdminSettingsPage() {
                                                         value={parseFloat(settings.theme?.radius || '0.5') || 0.5}
                                                         onChange={(e) => {
                                                             const val = e.target.value + "rem";
-                                                            const newTheme = { ...settings.theme, radius: val } as any;
+                                                            const newTheme = { ...settings.theme, radius: val } as unknown as Settings;
                                                             handleObjectChange('theme', newTheme);
                                                         }}
                                                     />

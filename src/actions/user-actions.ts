@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client"; // content removed or just omit line
 import bcrypt from "bcryptjs";
 
 export async function getUsers() {
@@ -118,7 +118,7 @@ export async function updateUser(id: string, data: FormData) {
             return { success: false, message: "Ana yönetici rolü değiştirilemez." };
         }
 
-        const updateData: any = {
+        const updateData: { name: string; email: string; role: string; password?: string } = {
             name,
             email,
             role,

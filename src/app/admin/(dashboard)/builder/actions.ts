@@ -1,6 +1,7 @@
 
 'use server'
 
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -42,11 +43,11 @@ export async function savePageContent(id: string, data: {
     title: string,
     slug: string,
     description?: string,
-    sections: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+    sections: { type: string; content: string | object | unknown; id?: string }[]
 }) {
     const { title, slug, description, sections } = data;
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         // 1. Sayfa meta verilerini güncelle
         await tx.page.update({
             where: { id },

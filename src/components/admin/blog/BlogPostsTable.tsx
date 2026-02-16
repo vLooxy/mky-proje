@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from "next/link";
 import Image from "next/image";
 import { BlogActionButtons } from "@/components/admin/blog/BlogActionButtons";
 
@@ -66,8 +65,7 @@ export function BlogPostsTable({ posts, categories }: BlogPostsTableProps) {
                                     </td>
                                     <td className="px-6 py-4">
                                         {(() => {
-                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                            const category = categories.find((c: any) => c.id === post.categoryId);
+                                            const category = categories.find((c) => c.id === post.categoryId);
                                             return (
                                                 <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium border ${category ? category.color.replace('bg-', 'text- border-').replace('/90', '') + '/20' : 'text-slate-700 border-slate-200'}`}>
                                                     {category ? category.name : 'Genel'}

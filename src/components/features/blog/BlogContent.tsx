@@ -1,5 +1,5 @@
 
-import Link from "next/link"; // eslint-disable-line @typescript-eslint/no-unused-vars
+
 import { getBlogPosts } from "@/actions/blog-actions";
 import { getCategories } from "@/actions/category-actions";
 import { BlogList } from "@/components/sections/BlogList";

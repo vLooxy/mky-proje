@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import { useState, useEffect } from 'react';
@@ -98,16 +98,24 @@ const COMPONENT_CATEGORIES: ComponentCategory[] = [
     }
 ];
 
+interface PageSection {
+    id: string;
+    type: SectionType;
+    content: string | Record<string, unknown>;
+    order: number;
+    [key: string]: unknown;
+}
+
 interface PageBuilderEditorProps {
-    page: any; // Type from Prisma
+    page: { id: string; title: string; slug: string; sections: PageSection[]; isPublished: boolean;[key: string]: unknown };
 }
 
 export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
     const [sections, setSections] = useState<EditorSection[]>(
-        page.sections.map((s: any) => ({
+        page.sections.map((s) => ({
             ...s,
             content: typeof s.content === 'string' ? JSON.parse(s.content) : s.content
-        }))
+        })) as EditorSection[]
     );
     const [isSaving, setIsSaving] = useState(false);
     const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
@@ -142,7 +150,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
         }
     };
 
-    const updateSectionContent = (id: string, newContent: any) => {
+    const updateSectionContent = (id: string, newContent: Record<string, unknown>) => {
         setSections(prev => prev.map(s => s.id === id ? { ...s, content: newContent } : s));
     };
 
@@ -353,9 +361,9 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                                         <div key={key}>
                                             <label className="block text-xs font-semibold mb-2 uppercase text-gray-400">{key}</label>
                                             <div className="space-y-2">
-                                                {value.map((item: any, i: number) => (
+                                                {value.map((item: unknown, i: number) => (
                                                     <div key={i} className="p-2 border rounded bg-gray-50 dark:bg-gray-900 text-xs">
-                                                        {typeof item === 'object' ? (
+                                                        {typeof item === 'object' && item !== null ? (
                                                             // Object in Array
                                                             <div className="space-y-2">
                                                                 {Object.keys(item).map(subKey => (
@@ -363,7 +371,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                                                                         <span className="text-[10px] text-gray-400 uppercase">{subKey}</span>
                                                                         <input
                                                                             className="w-full bg-transparent border-b border-gray-200 dark:border-gray-700 focus:outline-none"
-                                                                            value={item[subKey]} // Simple edit only for string props
+                                                                            value={(item as Record<string, string>)[subKey]} // Simple edit only for string props
                                                                             onChange={(e) => {
                                                                                 const newItems = [...value];
                                                                                 newItems[i] = { ...newItems[i], [subKey]: e.target.value };
@@ -377,7 +385,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                                                             // String in Array
                                                             <input
                                                                 className="w-full bg-transparent focus:outline-none"
-                                                                value={item}
+                                                                value={item as string}
                                                                 onChange={(e) => {
                                                                     const newItems = [...value];
                                                                     newItems[i] = e.target.value;
@@ -387,7 +395,7 @@ export function PageBuilderEditor({ page }: PageBuilderEditorProps) {
                                                         )}
                                                         <button
                                                             onClick={() => {
-                                                                const newItems = value.filter((_: any, index: number) => index !== i);
+                                                                const newItems = value.filter((_: unknown, index: number) => index !== i);
                                                                 updateSectionContent(selectedSection.id, { ...selectedSection.content, [key]: newItems });
                                                             }}
                                                             className="mt-2 w-full text-[10px] text-red-500 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-200 rounded py-1 flex items-center justify-center gap-1 transition-all"

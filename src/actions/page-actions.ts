@@ -26,7 +26,7 @@ export async function getAllPages() {
     }
 }
 
-export async function updatePageData(slug: string, newData: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+export async function updatePageData(slug: string, newData: unknown) {
     try {
         const fileContent = await fs.readFile(DATA_FILE_PATH, "utf-8");
         const data = JSON.parse(fileContent);

@@ -1,6 +1,4 @@
-
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -32,7 +30,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         const { title, slug, description, isPublished, sections } = body;
 
         // Transaction kullanarak sayfayı ve bölümleri güncelleyelim
-        const updatedPage = await prisma.$transaction(async (tx) => {
+        const updatedPage = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Sayfa bilgilerini güncelle
             const page = await tx.page.update({
                 where: { id },
@@ -61,13 +59,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
                     where: { pageId: id },
                     select: { id: true },
                 });
-                const currentIds = currentSections.map(s => s.id);
+                const currentIds = currentSections.map((s) => s.id);
 
                 // 2. Client'dan gelen ID'leri al
-                const incomingIds = sections.map((s: any) => s.id).filter((id: string) => id); // eslint-disable-line @typescript-eslint/no-explicit-any
+                const incomingIds = sections.map((s: { id: string }) => s.id).filter((id: string) => id);
 
                 // 3. Silinecek ID'leri bul
-                const idsToDelete = currentIds.filter(cid => !incomingIds.includes(cid));
+                const idsToDelete = currentIds.filter((cid) => !incomingIds.includes(cid));
                 if (idsToDelete.length > 0) {
                     await tx.section.deleteMany({
                         where: { id: { in: idsToDelete } }

@@ -34,11 +34,11 @@ export function Header() {
                 setSiteTitle(data.site.title);
             }
             if (data?.header?.navItems) {
-                setNavItems(data.header.navItems.map((item: any): NavItem => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+                setNavItems(data.header.navItems.map((item: { label: string; href: string; subItems?: { label: string; href: string }[] }): NavItem => ({
                     name: item.label,
                     href: item.href,
                     hasDropdown: !!item.subItems?.length,
-                    dropdownItems: item.subItems?.map((sub: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+                    dropdownItems: item.subItems?.map((sub: { label: string; href: string }) => ({
                         name: sub.label,
                         href: sub.href
                     }))
@@ -84,7 +84,7 @@ export function Header() {
                                 {item.hasDropdown && (
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
                                         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 p-2 min-w-[180px] overflow-hidden">
-                                            {item.dropdownItems?.map((subItem: any) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                                            {item.dropdownItems?.map((subItem) => (
                                                 <Link
                                                     key={subItem.name}
                                                     href={subItem.href}
@@ -185,7 +185,7 @@ export function Header() {
                             {/* Flattened sub-items */}
                             {item.hasDropdown && (
                                 <div className="pl-4 flex flex-col gap-1 mt-1 ml-2 border-l border-gray-200 dark:border-gray-800">
-                                    {item.dropdownItems?.map((subItem: any) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                                    {item.dropdownItems?.map((subItem) => (
                                         <Link
                                             key={subItem.name}
                                             href={subItem.href}

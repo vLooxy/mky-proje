@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 interface ModernStatsProps {
     items: Array<{
         type: 'circle' | 'bar' | 'text';
-        value: any;
+        value: number | string;
         suffix?: string;
         label: string;
     }>;
@@ -23,7 +23,7 @@ export function ModernStats({ items }: ModernStatsProps) {
                                     <div className="relative mb-6">
                                         <svg className="size-32 transform -rotate-90">
                                             <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-800" />
-                                            <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-primary" strokeDasharray={2 * Math.PI * 60} strokeDashoffset={2 * Math.PI * 60 * (1 - item.value / 100)} />
+                                            <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-primary" strokeDasharray={2 * Math.PI * 60} strokeDashoffset={2 * Math.PI * 60 * (1 - Number(item.value) / 100)} />
                                         </svg>
                                         <div className="absolute inset-0 flex items-center justify-center text-3xl font-bold">
                                             {item.value}<span className="text-sm align-top mt-1">{item.suffix}</span>

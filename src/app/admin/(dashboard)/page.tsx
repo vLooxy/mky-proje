@@ -11,10 +11,8 @@ export default async function AdminDashboard() {
     const analytics = await getAnalytics();
 
     // 2. Calculate Stats
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const publishedPostCount = posts.filter((p: any) => p.isPublished).length;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newRequestCount = forms.filter((f: any) => f.status === 'pending').length;
+    const publishedPostCount = posts.filter((p) => p.isPublished).length;
+    const newRequestCount = forms.filter((f: any) => f.status === 'pending').length; // eslint-disable-line @typescript-eslint/no-explicit-any
     const totalVisits = analytics.totalVisits || 0;
 
     return (

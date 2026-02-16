@@ -4,7 +4,7 @@ import { UserList } from "@/components/admin/UserList";
 import { Suspense } from "react";
 
 export default async function AdminUsersPage() {
-    const { success, users } = await getUsers();
+    const { users } = await getUsers();
 
     return (
         <div className="p-6 lg:p-10">

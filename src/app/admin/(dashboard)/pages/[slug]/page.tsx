@@ -6,9 +6,38 @@ import { useState, useEffect, useTransition } from "react";
 import { getPageData, updatePageData } from "@/actions/page-actions";
 
 export default function PageEditor() {
+    interface PageData {
+        title?: string;
+        content?: string;
+        hero?: {
+            badge?: string;
+            title_line1?: string;
+            title_highlight?: string;
+            description?: string;
+            button_primary?: string;
+            button_secondary?: string;
+            backgroundImage?: string;
+            [key: string]: string | undefined;
+        };
+        [key: string]: unknown;
+    }
+
+    interface FormField {
+        key: string;
+        label: string;
+        type: string;
+        value: string | undefined;
+    }
+
+    interface SectionConfig {
+        id: string;
+        title: string;
+        fields: FormField[];
+    }
+
     const params = useParams();
     const slug = params.slug as string;
-    const [pageData, setPageData] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const [pageData, setPageData] = useState<PageData | null>(null);
     const [loading, setLoading] = useState(true);
     const [isPending, startTransition] = useTransition();
 
@@ -18,7 +47,7 @@ export default function PageEditor() {
             if (!slug) return;
             try {
                 const data = await getPageData(slug);
-                setPageData(data);
+                setPageData(data as PageData);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -30,7 +59,7 @@ export default function PageEditor() {
 
     // Define section configurations for the UI
     // In a real CMS these would be defined in a schema, here we map them manually to the data structure
-    const getSectionsConfig = (data: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const getSectionsConfig = (data: PageData): SectionConfig[] => {
         if (slug === 'home') {
             return [
                 {
@@ -66,7 +95,7 @@ export default function PageEditor() {
 
     const sections = pageData ? getSectionsConfig(pageData) : [];
     const [openSections, setOpenSections] = useState<Record<string, boolean>>({ hero: true });
-    const [formData, setFormData] = useState<any>({}); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const [formData, setFormData] = useState<Record<string, unknown>>({});
 
     // Initialize form data when pageData loads
     useEffect(() => {
@@ -84,7 +113,7 @@ export default function PageEditor() {
         // Support nested keys (hero.title) and potential flat keys (title)
         if (fieldKey.includes('.')) {
             const [parent, child] = fieldKey.split('.');
-            setFormData((prev: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+            setFormData((prev) => ({
                 ...prev,
                 [parent]: {
                     ...prev[parent] || {},
@@ -92,7 +121,7 @@ export default function PageEditor() {
                 }
             }));
         } else {
-            setFormData((prev: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+            setFormData((prev) => ({
                 ...prev,
                 [fieldKey]: value
             }));
@@ -160,7 +189,7 @@ export default function PageEditor() {
                 {/* Editor Sections */}
                 <div className="flex flex-col gap-6">
                     {sections.length > 0 ? (
-                        sections.map((section: any) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
+                        sections.map((section: SectionConfig) => (
                             <div key={section.id} className="bg-admin-card dark:bg-admin-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
                                 <button
                                     onClick={() => toggleSection(section.id)}
@@ -177,10 +206,10 @@ export default function PageEditor() {
 
                                 {openSections[section.id] && (
                                     <div className="p-6 space-y-5 bg-white dark:bg-admin-card-dark">
-                                        {section.fields.map((field: any, idx: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                                        {section.fields.map((field: FormField, idx: number) => {
                                             // Access current value from formData state
                                             const [parent, child] = field.key.split('.');
-                                            const currentValue = formData[parent]?.[child] ?? '';
+                                            const currentValue = (formData[parent] as Record<string, string>)?.[child] ?? '';
 
                                             return (
                                                 <div key={idx}>
@@ -212,7 +241,8 @@ export default function PageEditor() {
                         <div className="p-12 text-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
                             <p className="text-slate-500 dark:text-slate-400">Bu sayfa için henüz düzenlenebilir alan tanımlanmamış (/src/data/pages.json dosyasını kontrol edin).</p>
                         </div>
-                    )}
+                    )
+                    }
                 </div>
             </div>
         </div>
