@@ -1,16 +1,19 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
 import { revalidatePath } from "next/cache";
 import { BlogPost } from "@/types/blog";
-
-const DATA_FILE_PATH = path.join(process.cwd(), "src/data/blogs.json");
+import { prisma } from "@/lib/db";
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
     try {
-        const fileContent = await fs.readFile(DATA_FILE_PATH, "utf-8");
-        return JSON.parse(fileContent) as BlogPost[];
+        const posts = await prisma.blog.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return posts.map(post => ({
+            ...post,
+            date: post.createdAt.toISOString()
+        }));
     } catch (error) {
         console.error("Error reading blog posts:", error);
         return [];
@@ -19,8 +22,16 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     try {
-        const posts = await getBlogPosts();
-        return posts.find((p) => p.slug === slug) || null;
+        const post = await prisma.blog.findUnique({
+            where: { slug }
+        });
+
+        if (!post) return null;
+
+        return {
+            ...post,
+            date: post.createdAt.toISOString()
+        };
     } catch (error) {
         console.error("Error reading blog post:", error);
         return null;
@@ -29,22 +40,43 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 export async function updateBlogPost(id: string, newData: Partial<BlogPost>) {
     try {
-        const posts = await getBlogPosts();
-        const index = posts.findIndex((p) => p.id === id);
+        const { date, ...rest } = newData;
+        // date is ignored as we use createdAt/updatedAt from DB
 
-        if (index === -1) {
-            // Create new
-            const newPost: BlogPost = {
-                ...newData as BlogPost, // user must provide required fields for new post
-                id: Date.now().toString()
-            };
-            posts.push(newPost);
+        // Check if we are creating or updating
+        // For new posts, id might be empty or a placeholder
+        const existingPost = id ? await prisma.blog.findUnique({ where: { id } }) : null;
+
+        if (existingPost) {
+            await prisma.blog.update({
+                where: { id },
+                data: {
+                    title: rest.title,
+                    slug: rest.slug,
+                    excerpt: rest.excerpt,
+                    content: rest.content,
+                    image: rest.image,
+                    author: rest.author,
+                    tags: rest.tags,
+                    categoryId: rest.categoryId,
+                    isPublished: rest.isPublished,
+                }
+            });
         } else {
-            // Update existing
-            posts[index] = { ...posts[index], ...newData };
+            await prisma.blog.create({
+                data: {
+                    title: rest.title!,
+                    slug: rest.slug!,
+                    excerpt: rest.excerpt!,
+                    content: rest.content!,
+                    image: rest.image,
+                    author: rest.author,
+                    tags: rest.tags || [],
+                    categoryId: rest.categoryId,
+                    isPublished: rest.isPublished || false,
+                }
+            });
         }
-
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(posts, null, 2), "utf-8");
 
         revalidatePath("/(site)/blog");
         revalidatePath(`/admin/blog`);
@@ -57,10 +89,9 @@ export async function updateBlogPost(id: string, newData: Partial<BlogPost>) {
 
 export async function deleteBlogPost(id: string) {
     try {
-        const posts = await getBlogPosts();
-        const filteredPosts = posts.filter((p) => p.id !== id);
-
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(filteredPosts, null, 2), "utf-8");
+        await prisma.blog.delete({
+            where: { id }
+        });
 
         revalidatePath("/(site)/blog");
         revalidatePath(`/admin/blog`);
