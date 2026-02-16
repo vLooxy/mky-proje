@@ -10,7 +10,7 @@ export default function AdminSettingsPage() {
     const [settings, setSettings] = useState<Settings | null>(null);
     const [loading, setLoading] = useState(true);
     const [isPending, startTransition] = useTransition();
-    const [activeTab, setActiveTab] = useState<'general' | 'header' | 'footer'>('general');
+    const [activeTab, setActiveTab] = useState<'general' | 'header' | 'footer' | 'appearance'>('general');
 
     useEffect(() => {
         async function loadSettings() {
@@ -66,6 +66,7 @@ export default function AdminSettingsPage() {
 
     const tabs = [
         { id: 'general', label: 'Genel & İletişim', icon: 'settings' },
+        { id: 'appearance', label: 'Görünüm', icon: 'palette' },
         { id: 'header', label: 'Header & Menü', icon: 'menu' },
         { id: 'footer', label: 'Footer & Sosyal', icon: 'vertical_align_bottom' },
     ];
@@ -93,7 +94,7 @@ export default function AdminSettingsPage() {
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
-                            onClick={() => setActiveTab(tab.id as 'general' | 'header' | 'footer')}
+                            onClick={() => setActiveTab(tab.id as 'general' | 'header' | 'footer' | 'appearance')}
                             className={cn(
                                 "flex items-center gap-2 px-6 py-3 border-b-2 text-sm font-medium transition-colors whitespace-nowrap",
                                 activeTab === tab.id
@@ -181,6 +182,478 @@ export default function AdminSettingsPage() {
                                             value={settings.contact?.email || ''}
                                             onChange={(e) => handleChange('contact', 'email', e.target.value)}
                                         />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* APPEARANCE TAB */}
+                    {activeTab === 'appearance' && (
+                        <div className="space-y-8">
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-primary">palette</span>
+                                        Tema Ayarları
+                                    </h2>
+                                    <button
+                                        onClick={() => {
+                                            if (confirm("Tema ayarlarını varsayılan hale getirmek istediğinize emin misiniz?")) {
+                                                const defaultTheme = {
+                                                    fontDisplay: "Inter",
+                                                    fontBody: "Inter",
+                                                    radius: "0.5rem",
+                                                    colors: {
+                                                        light: {
+                                                            primary: "#137fec",
+                                                            secondary: "#64748b",
+                                                            background: "#f6f7f8",
+                                                            surface: "#ffffff",
+                                                            text: "#111418",
+                                                            success: "#22c55e",
+                                                            error: "#ef4444",
+                                                            warning: "#f59e0b",
+                                                            info: "#3b82f6"
+                                                        },
+                                                        dark: {
+                                                            primary: "#137fec",
+                                                            secondary: "#94a3b8",
+                                                            background: "#101922",
+                                                            surface: "#1a2634",
+                                                            text: "#ffffff",
+                                                            success: "#22c55e",
+                                                            error: "#ef4444",
+                                                            warning: "#f59e0b",
+                                                            info: "#3b82f6"
+                                                        }
+                                                    }
+                                                };
+                                                handleObjectChange('theme', defaultTheme);
+                                            }
+                                        }}
+                                        className="text-sm text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+                                    >
+                                        <span className="material-symbols-outlined text-lg">restore</span>
+                                        Varsayılanlara Dön
+                                    </button>
+                                </div>
+
+                                <div className="space-y-6">
+                                    {/* Typography Section */}
+                                    <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-base">text_fields</span>
+                                            Yazı Tipleri
+                                        </h3>
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Başlık Yazı Tipi (Display Font)</label>
+                                                <select
+                                                    className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-admin-bg-dark px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                                    value={settings.theme?.fontDisplay || 'Inter'}
+                                                    onChange={(e) => {
+                                                        const newTheme = { ...settings.theme, fontDisplay: e.target.value } as any;
+                                                        handleObjectChange('theme', newTheme);
+                                                    }}
+                                                >
+                                                    <option value="Inter">Inter</option>
+                                                    <option value="Roboto">Roboto</option>
+                                                    <option value="Open Sans">Open Sans</option>
+                                                    <option value="Montserrat">Montserrat</option>
+                                                    <option value="Poppins">Poppins</option>
+                                                    <option value="Lato">Lato</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Gövde Yazı Tipi (Body Font)</label>
+                                                <select
+                                                    className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-admin-bg-dark px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                                    value={settings.theme?.fontBody || 'Inter'}
+                                                    onChange={(e) => {
+                                                        const newTheme = { ...settings.theme, fontBody: e.target.value } as any;
+                                                        handleObjectChange('theme', newTheme);
+                                                    }}
+                                                >
+                                                    <option value="Inter">Inter</option>
+                                                    <option value="Roboto">Roboto</option>
+                                                    <option value="Open Sans">Open Sans</option>
+                                                    <option value="Montserrat">Montserrat</option>
+                                                    <option value="Poppins">Poppins</option>
+                                                    <option value="Lato">Lato</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Colors Section */}
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {/* Light Mode Colors */}
+                                        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                            <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                                                <span className="material-symbols-outlined text-yellow-500">light_mode</span>
+                                                <h3 className="font-bold text-slate-900">Aydınlık Mod (Light)</h3>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-500 mb-1">Ana Renk (Primary)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.primary || '#137fec'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        light: { ...settings.theme?.colors?.light, primary: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-600 uppercase">{settings.theme?.colors?.light?.primary || '#137fec'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-500 mb-1">İkincil Renk (Secondary)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.secondary || '#64748b'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        light: { ...settings.theme?.colors?.light, secondary: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-600 uppercase">{settings.theme?.colors?.light?.secondary || '#64748b'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-500 mb-1">Arkaplan (Background)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.background || '#f6f7f8'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        light: { ...settings.theme?.colors?.light, background: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-600 uppercase">{settings.theme?.colors?.light?.background || '#f6f7f8'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-500 mb-1">Kart/Yüzey (Surface)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.surface || '#ffffff'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        light: { ...settings.theme?.colors?.light, surface: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-600 uppercase">{settings.theme?.colors?.light?.surface || '#ffffff'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-500 mb-1">Metin (Text)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.text || '#111418'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        light: { ...settings.theme?.colors?.light, text: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-600 uppercase">{settings.theme?.colors?.light?.text || '#111418'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-6 pt-4 border-t border-slate-100">
+                                                <h4 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Durum Renkleri</h4>
+                                                <div className="grid grid-cols-4 gap-2">
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-500 mb-1">Başarılı</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.success || '#22c55e'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, success: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-500 mb-1">Hata</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.error || '#ef4444'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, error: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-500 mb-1">Uyarı</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.warning || '#f59e0b'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, warning: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-500 mb-1">Bilgi</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-200 cursor-pointer"
+                                                            value={settings.theme?.colors?.light?.info || '#3b82f6'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, light: { ...settings.theme?.colors?.light, info: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Dark Mode Colors */}
+                                        <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 shadow-sm">
+                                            <div className="flex items-center gap-2 mb-4 border-b border-slate-800 pb-3">
+                                                <span className="material-symbols-outlined text-blue-400">dark_mode</span>
+                                                <h3 className="font-bold text-white">Karanlık Mod (Dark)</h3>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-400 mb-1">Ana Renk (Primary)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.primary || '#137fec'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        dark: { ...settings.theme?.colors?.dark, primary: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-300 uppercase">{settings.theme?.colors?.dark?.primary || '#137fec'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-400 mb-1">İkincil Renk (Secondary)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.secondary || '#94a3b8'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        dark: { ...settings.theme?.colors?.dark, secondary: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-300 uppercase">{settings.theme?.colors?.dark?.secondary || '#94a3b8'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-400 mb-1">Arkaplan (Background)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.background || '#101922'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        dark: { ...settings.theme?.colors?.dark, background: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-300 uppercase">{settings.theme?.colors?.dark?.background || '#101922'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-400 mb-1">Kart/Yüzey (Surface)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.surface || '#1a2634'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        dark: { ...settings.theme?.colors?.dark, surface: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-300 uppercase">{settings.theme?.colors?.dark?.surface || '#1a2634'}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-medium text-slate-400 mb-1">Metin (Text)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="color"
+                                                            className="w-10 h-10 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.text || '#ffffff'}
+                                                            onChange={(e) => {
+                                                                const newTheme = {
+                                                                    ...settings.theme,
+                                                                    colors: {
+                                                                        ...settings.theme?.colors,
+                                                                        dark: { ...settings.theme?.colors?.dark, text: e.target.value }
+                                                                    }
+                                                                } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-mono text-slate-300 uppercase">{settings.theme?.colors?.dark?.text || '#ffffff'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-6 pt-4 border-t border-slate-800">
+                                                <h4 className="text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Durum Renkleri</h4>
+                                                <div className="grid grid-cols-4 gap-2">
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-400 mb-1">Başarılı</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.success || '#22c55e'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, success: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-400 mb-1">Hata</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.error || '#ef4444'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, error: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-400 mb-1">Uyarı</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.warning || '#f59e0b'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, warning: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-medium text-slate-400 mb-1">Bilgi</label>
+                                                        <input type="color" className="w-full h-8 p-0.5 rounded border border-slate-700 bg-slate-800 cursor-pointer"
+                                                            value={settings.theme?.colors?.dark?.info || '#3b82f6'}
+                                                            onChange={(e) => {
+                                                                const newTheme = { ...settings.theme, colors: { ...settings.theme?.colors, dark: { ...settings.theme?.colors?.dark, info: e.target.value } } } as any;
+                                                                handleObjectChange('theme', newTheme);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Border Radius Section */}
+                                    <div className="bg-white dark:bg-admin-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-base">rounded_corner</span>
+                                            Kenar Yuvarlaklığı (Border Radius)
+                                        </h3>
+                                        <div className="grid md:grid-cols-2 gap-8 items-center">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Genel Yuvarlaklık Değeri</label>
+                                                <div className="flex items-center gap-4">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="2"
+                                                        step="0.125"
+                                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700"
+                                                        value={parseFloat(settings.theme?.radius || '0.5') || 0.5}
+                                                        onChange={(e) => {
+                                                            const val = e.target.value + "rem";
+                                                            const newTheme = { ...settings.theme, radius: val } as any;
+                                                            handleObjectChange('theme', newTheme);
+                                                        }}
+                                                    />
+                                                    <span className="font-mono text-sm text-slate-600 dark:text-slate-400 w-16 text-right">
+                                                        {settings.theme?.radius || '0.5rem'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between text-xs text-slate-400 mt-2 px-1">
+                                                    <span>Keskin (0)</span>
+                                                    <span>Normal (0.5)</span>
+                                                    <span>Yuvarlak (2)</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-center">
+                                                <div className="flex gap-4">
+                                                    <button className="px-4 py-2 bg-primary text-white" style={{ borderRadius: settings.theme?.radius || '0.5rem' }}>Buton</button>
+                                                    <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700" style={{ borderRadius: settings.theme?.radius || '0.5rem' }}></div>
+                                                    <div className="px-4 py-2 border border-slate-300 dark:border-slate-600" style={{ borderRadius: settings.theme?.radius || '0.5rem' }}>Kart</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -7,10 +7,10 @@ type FormActionsProps = {
     form: {
         id: string;
         name: string;
-        company: string;
-        service: string;
+        email: string; // Changed from company
+        subject: string; // Changed from service
         message: string;
-        date: string | Date;
+        createdAt: Date; // Changed from date
         status: string;
     };
 };
@@ -75,15 +75,17 @@ export default function FormActions({ form }: FormActionsProps) {
                             <div>
                                 <label className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1 block">Ad / Firma</label>
                                 <p className="text-slate-900 dark:text-white font-medium">{form.name}</p>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm">{form.company}</p>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm">{form.email}</p>
                             </div>
 
                             <div>
                                 <label className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1 block">Hizmet</label>
                                 <div className="inline-block px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-sm font-medium">
-                                    {form.service === 'risk_analysis' ? 'Risk Analizi' :
-                                        form.service === 'safety_audit' ? 'Güvenlik Denetimi' :
-                                            form.service === 'training' ? 'Eğitim' : form.service}
+                                    {form.subject === 'general' ? 'Genel Bilgi' :
+                                        form.subject === 'proposal' ? 'Teklif İste' :
+                                            form.subject === 'audit_request' ? 'İSG Denetim Talebi' :
+                                                form.subject === 'engineering' ? 'Mühendislik Danışmanlığı' :
+                                                    form.subject === 'career' ? 'Kariyer' : form.subject}
                                 </div>
                             </div>
 
@@ -99,7 +101,7 @@ export default function FormActions({ form }: FormActionsProps) {
                             <div>
                                 <label className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1 block">Tarih</label>
                                 <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                    {new Date(form.date).toLocaleString('tr-TR', { dateStyle: 'full', timeStyle: 'short' })}
+                                    {new Date(form.createdAt).toLocaleString('tr-TR', { dateStyle: 'full', timeStyle: 'short' })}
                                 </p>
                             </div>
                         </div>

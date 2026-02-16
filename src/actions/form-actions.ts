@@ -1,19 +1,22 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
-
-const DATA_FILE_PATH = path.join(process.cwd(), "src/data/forms.json");
-
 import { revalidatePath } from "next/cache";
-import { randomUUID } from "crypto";
+import { prisma } from "@/lib/db";
 
 export async function getForms() {
     try {
-        const fileContent = await fs.readFile(DATA_FILE_PATH, "utf-8");
-        return JSON.parse(fileContent);
-    } catch {
-        // If file doesn't exist, return empty array
+        const forms = await prisma.contactForm.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        // Convert dates to ISO string for consistency with previous implementation if needed by frontend
+        // But better to return the object as is and handle dates in frontend or let serialisation handle it.
+        // Prisma dates are Date objects, JSON.stringify handles them fine.
+        return forms;
+    } catch (error) {
+        console.error("Error fetching forms:", error);
         return [];
     }
 }
@@ -30,20 +33,15 @@ export async function submitForm(prevState: unknown, formData: FormData) {
             return { success: false, message: "Lütfen gerekli alanları doldurunuz." };
         }
 
-        const newForm = {
-            id: randomUUID(),
-            name,
-            company: email, // Using email as company/contact info for now or we could add company field to form
-            service: subject,
-            message, // Storing message too
-            date: new Date().toISOString(),
-            status: "pending"
-        };
-
-        const existingForms = await getForms();
-        const updatedForms = [newForm, ...existingForms];
-
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(updatedForms, null, 2), "utf-8");
+        await prisma.contactForm.create({
+            data: {
+                name,
+                email,
+                subject: subject || "Genel",
+                message,
+                status: "pending"
+            }
+        });
 
         revalidatePath("/admin");
 
@@ -56,10 +54,9 @@ export async function submitForm(prevState: unknown, formData: FormData) {
 
 export async function deleteForm(id: string) {
     try {
-        const existingForms = await getForms();
-        const updatedForms = existingForms.filter((f: any) => f.id !== id); // eslint-disable-line @typescript-eslint/no-explicit-any
-
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(updatedForms, null, 2), "utf-8");
+        await prisma.contactForm.delete({
+            where: { id }
+        });
 
         revalidatePath("/admin");
 
@@ -72,12 +69,10 @@ export async function deleteForm(id: string) {
 
 export async function updateFormStatus(id: string, status: string) {
     try {
-        const existingForms = await getForms();
-        const updatedForms = existingForms.map((f: any) => // eslint-disable-line @typescript-eslint/no-explicit-any
-            f.id === id ? { ...f, status } : f
-        );
-
-        await fs.writeFile(DATA_FILE_PATH, JSON.stringify(updatedForms, null, 2), "utf-8");
+        await prisma.contactForm.update({
+            where: { id },
+            data: { status }
+        });
 
         revalidatePath("/admin");
 

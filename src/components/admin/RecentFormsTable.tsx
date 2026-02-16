@@ -5,17 +5,17 @@ interface RecentFormsTableProps {
     forms: {
         id: string;
         name: string;
-        company: string;
-        service: string;
+        email: string;
+        subject: string;
         message: string;
-        date: string | Date;
+        createdAt: Date;
         status: string;
     }[];
 }
 
 export function RecentFormsTable({ forms }: RecentFormsTableProps) {
     // Sort forms by date (newest first)
-    const recentForms = [...forms].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
+    const recentForms = [...forms].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
 
     return (
         <div className="flex flex-col gap-4">
@@ -49,17 +49,19 @@ export function RecentFormsTable({ forms }: RecentFormsTableProps) {
                                                 </div>
                                                 <div>
                                                     <p className="font-medium text-slate-900 dark:text-white text-sm">{form.name}</p>
-                                                    <p className="text-slate-500 text-xs">{form.company}</p>
+                                                    <p className="text-slate-500 text-xs">{form.email}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="p-4 text-sm text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                                            {form.service === 'risk_analysis' ? 'Risk Analizi' :
-                                                form.service === 'safety_audit' ? 'Güvenlik Denetimi' :
-                                                    form.service === 'training' ? 'Eğitim' : form.service}
+                                            {form.subject === 'general' ? 'Genel Bilgi' :
+                                                form.subject === 'proposal' ? 'Teklif İste' :
+                                                    form.subject === 'audit_request' ? 'İSG Denetim Talebi' :
+                                                        form.subject === 'engineering' ? 'Mühendislik Danışmanlığı' :
+                                                            form.subject === 'career' ? 'Kariyer' : form.subject}
                                         </td>
                                         <td className="p-4 text-sm text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                                            {new Date(form.date).toLocaleDateString('tr-TR')}
+                                            {new Date(form.createdAt).toLocaleDateString('tr-TR')}
                                         </td>
                                         <td className="p-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${form.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' :

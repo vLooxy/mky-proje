@@ -15,6 +15,35 @@
     "instagram": "https://instagram.com",
     "facebook": "https://facebook.com"
   },
+  "theme": {
+    "fontDisplay": "Inter",
+    "fontBody": "Inter",
+    "radius": "0.5rem",
+    "colors": {
+      "light": {
+        "primary": "#137fec",
+        "secondary": "#64748b",
+        "background": "#f6f7f8",
+        "surface": "#ffffff",
+        "text": "#111418",
+        "success": "#22c55e",
+        "error": "#ef4444",
+        "warning": "#f59e0b",
+        "info": "#3b82f6"
+      },
+      "dark": {
+        "primary": "#137fec",
+        "secondary": "#94a3b8",
+        "background": "#101922",
+        "surface": "#1a2634",
+        "text": "#ffffff",
+        "success": "#22c55e",
+        "error": "#ef4444",
+        "warning": "#f59e0b",
+        "info": "#3b82f6"
+      }
+    }
+  },
   "header": {
     "navItems": [
       {

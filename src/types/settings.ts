@@ -30,4 +30,27 @@ export interface Settings {
     footer?: {
         columns?: FooterColumn[];
     };
+    theme?: ThemeSettings;
+}
+
+export interface ThemeColors {
+    primary: string;
+    secondary: string;
+    background: string;
+    surface: string;
+    text: string;
+    success: string;
+    error: string;
+    warning: string;
+    info: string;
+}
+
+export interface ThemeSettings {
+    fontDisplay: string;
+    fontBody: string;
+    radius: string;
+    colors: {
+        light: ThemeColors;
+        dark: ThemeColors;
+    };
 }
