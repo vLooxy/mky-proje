@@ -40,7 +40,6 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 export async function updateBlogPost(id: string, newData: Partial<BlogPost>) {
     try {
-        const { date, ...rest } = newData;
         // date is ignored as we use createdAt/updatedAt from DB
 
         // Check if we are creating or updating
@@ -51,29 +50,29 @@ export async function updateBlogPost(id: string, newData: Partial<BlogPost>) {
             await prisma.blog.update({
                 where: { id },
                 data: {
-                    title: rest.title,
-                    slug: rest.slug,
-                    excerpt: rest.excerpt,
-                    content: rest.content,
-                    image: rest.image,
-                    author: rest.author,
-                    tags: rest.tags,
-                    categoryId: rest.categoryId,
-                    isPublished: rest.isPublished,
+                    title: newData.title,
+                    slug: newData.slug,
+                    excerpt: newData.excerpt,
+                    content: newData.content,
+                    image: newData.image,
+                    author: newData.author,
+                    tags: newData.tags,
+                    categoryId: newData.categoryId,
+                    isPublished: newData.isPublished,
                 }
             });
         } else {
             await prisma.blog.create({
                 data: {
-                    title: rest.title!,
-                    slug: rest.slug!,
-                    excerpt: rest.excerpt!,
-                    content: rest.content!,
-                    image: rest.image,
-                    author: rest.author,
-                    tags: rest.tags || [],
-                    categoryId: rest.categoryId,
-                    isPublished: rest.isPublished || false,
+                    title: newData.title!,
+                    slug: newData.slug!,
+                    excerpt: newData.excerpt!,
+                    content: newData.content!,
+                    image: newData.image,
+                    author: newData.author,
+                    tags: newData.tags || [],
+                    categoryId: newData.categoryId,
+                    isPublished: newData.isPublished || false,
                 }
             });
         }

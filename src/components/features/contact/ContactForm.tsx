@@ -63,25 +63,41 @@ export function ContactForm() {
                         required
                     />
                 </div>
-            </div>
-            <div>
-                <label
-                    className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
-                    htmlFor="subject"
-                >
-                    Konu
-                </label>
-                <select
-                    className="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow px-4 py-2"
-                    id="subject"
-                    name="subject"
-                >
-                    <option value="general">Genel Bilgi</option>
-                    <option value="proposal">Teklif İste</option>
-                    <option value="audit_request">İSG Denetim Talebi</option>
-                    <option value="engineering">Mühendislik Danışmanlığı</option>
-                    <option value="career">Kariyer</option>
-                </select>
+                <div>
+                    <label
+                        className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                        htmlFor="phone"
+                    >
+                        Telefon Numarası
+                    </label>
+                    <input
+                        className="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow px-4 py-2"
+                        id="phone"
+                        name="phone"
+                        placeholder="05xxxxxxxxx"
+                        type="tel"
+                        required
+                    />
+                </div>
+                <div>
+                    <label
+                        className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                        htmlFor="subject"
+                    >
+                        Konu
+                    </label>
+                    <select
+                        className="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow px-4 py-2"
+                        id="subject"
+                        name="subject"
+                    >
+                        <option value="general">Genel Bilgi</option>
+                        <option value="proposal">Teklif İste</option>
+                        <option value="audit_request">İSG Denetim Talebi</option>
+                        <option value="engineering">Mühendislik Danışmanlığı</option>
+                        <option value="career">Kariyer</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <label

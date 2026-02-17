@@ -13,11 +13,11 @@ export async function getForms() {
                 id: true,
                 name: true,
                 email: true,
+                phone: true,
                 subject: true,
                 message: true,
                 createdAt: true,
                 status: true,
-                // @ts-ignore
                 fileName: true,
                 // fileData is excluded for performance
             }
@@ -37,12 +37,13 @@ export async function submitForm(prevState: unknown, formData: FormData) {
     try {
         const name = formData.get("name") as string;
         const email = formData.get("email") as string;
+        const phone = formData.get("phone") as string;
         const subject = formData.get("subject") as string;
         const message = formData.get("message") as string;
         const file = formData.get("file") as File | null;
 
         // Simple Validation
-        if (!name || !email || !message) {
+        if (!name || !email || !phone || !message) {
             return { success: false, message: "Lütfen gerekli alanları doldurunuz." };
         }
 
@@ -77,11 +78,10 @@ export async function submitForm(prevState: unknown, formData: FormData) {
             data: {
                 name,
                 email,
+                phone,
                 subject: subject || "Genel",
                 message,
-                // @ts-ignore
                 fileData,
-                // @ts-ignore
                 fileName,
                 status: "pending"
             }

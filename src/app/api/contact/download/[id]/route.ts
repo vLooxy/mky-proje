@@ -11,9 +11,7 @@ export async function GET(
         const form = await prisma.contactForm.findUnique({
             where: { id },
             select: {
-                // @ts-ignore
                 fileData: true,
-                // @ts-ignore
                 fileName: true
             }
         });
@@ -34,7 +32,6 @@ export async function GET(
 
         const buffer = Buffer.from(base64Data, 'base64');
 
-        // @ts-ignore
         const filename = form.fileName || 'download.pdf';
 
         // Encode filename for Content-Disposition header to handle special characters
@@ -49,6 +46,7 @@ export async function GET(
                 'Content-Type': contentType,
                 'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`,
                 'Content-Length': buffer.length.toString(),
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
             },
         });
     } catch (error) {

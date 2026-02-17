@@ -1,0 +1,16 @@
+﻿
+> engisafe-web@0.1.0 lint
+> eslint
+
+
+C:\Users\vLoxsy\Desktop\PROJELER\MKY-3\engisafe-web\src\actions\blog-actions.ts
+  43:17  warning  'date' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\vLoxsy\Desktop\PROJELER\MKY-3\engisafe-web\src\actions\category-actions.ts
+  6:10  warning  'getBlogPosts' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\vLoxsy\Desktop\PROJELER\MKY-3\engisafe-web\src\actions\page-actions.ts
+  26:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 3 problems (1 error, 2 warnings)
+

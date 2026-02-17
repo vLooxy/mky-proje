@@ -23,7 +23,7 @@ export async function getAllPages() {
         const pages = await prisma.page.findMany();
 
         // Map to expected format: { [slug]: data }
-        const result: Record<string, any> = {};
+        const result: Record<string, unknown> = {};
 
         pages.forEach(page => {
             if (page.contentJson) {

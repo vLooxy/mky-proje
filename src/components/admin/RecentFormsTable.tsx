@@ -6,6 +6,7 @@ interface RecentFormsTableProps {
         id: string;
         name: string;
         email: string;
+        phone?: string | null;
         subject: string;
         message: string;
         createdAt: Date;
@@ -52,6 +53,7 @@ export function RecentFormsTable({ forms }: RecentFormsTableProps) {
                                                 <div>
                                                     <p className="font-medium text-slate-900 dark:text-white text-sm">{form.name}</p>
                                                     <p className="text-slate-500 text-xs">{form.email}</p>
+                                                    <p className="text-slate-500 text-xs">{form.phone}</p>
                                                 </div>
                                             </div>
                                         </td>

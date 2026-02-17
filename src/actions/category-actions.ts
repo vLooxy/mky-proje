@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { BlogCategory } from "@/types/blog";
 import { prisma } from "@/lib/db";
-import { getBlogPosts } from "./blog-actions";
 
 export async function getCategories(): Promise<BlogCategory[]> {
     try {
