@@ -8,16 +8,28 @@ export async function getForms() {
         const forms = await prisma.contactForm.findMany({
             orderBy: {
                 createdAt: 'desc'
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                subject: true,
+                message: true,
+                createdAt: true,
+                status: true,
+                // @ts-ignore
+                fileName: true,
+                // fileData is excluded for performance
             }
         });
 
         // Convert dates to ISO string for consistency with previous implementation if needed by frontend
         // But better to return the object as is and handle dates in frontend or let serialisation handle it.
         // Prisma dates are Date objects, JSON.stringify handles them fine.
-        return forms;
+        return { success: true, forms };
     } catch (error) {
         console.error("Error fetching forms:", error);
-        return [];
+        return { success: false, forms: [] };
     }
 }
 
@@ -27,10 +39,38 @@ export async function submitForm(prevState: unknown, formData: FormData) {
         const email = formData.get("email") as string;
         const subject = formData.get("subject") as string;
         const message = formData.get("message") as string;
+        const file = formData.get("file") as File | null;
 
         // Simple Validation
         if (!name || !email || !message) {
             return { success: false, message: "Lütfen gerekli alanları doldurunuz." };
+        }
+
+        let fileData: string | undefined;
+        let fileName: string | undefined;
+
+        if (file && file.size > 0) {
+            const validTypes = [
+                "application/pdf",
+                "application/zip",
+                "application/x-zip-compressed",
+                "application/vnd.rar",
+                "application/x-rar-compressed",
+                "application/x-rar",
+                "image/jpeg",
+                "image/png"
+            ];
+
+            if (!validTypes.includes(file.type)) {
+                return { success: false, message: "Desteklenmeyen dosya formatı. (PDF, ZIP, RAR, JPEG, PNG)" };
+            }
+            if (file.size > 20 * 1024 * 1024) { // 20MB
+                return { success: false, message: "Dosya boyutu 20MB'dan küçük olmalıdır." };
+            }
+
+            const buffer = Buffer.from(await file.arrayBuffer());
+            fileData = `data:${file.type};base64,${buffer.toString("base64")}`;
+            fileName = file.name;
         }
 
         await prisma.contactForm.create({
@@ -39,6 +79,10 @@ export async function submitForm(prevState: unknown, formData: FormData) {
                 email,
                 subject: subject || "Genel",
                 message,
+                // @ts-ignore
+                fileData,
+                // @ts-ignore
+                fileName,
                 status: "pending"
             }
         });

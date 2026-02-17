@@ -7,7 +7,8 @@ import { RecentFormsTable } from "@/components/admin/RecentFormsTable";
 export default async function AdminDashboard() {
     // 1. Fetch Real Data
     const posts = await getBlogPosts();
-    const forms = await getForms();
+    const formsResult = await getForms();
+    const forms = formsResult.success ? formsResult.forms : [];
     const analytics = await getAnalytics();
 
     // 2. Calculate Stats

@@ -10,6 +10,7 @@ interface RecentFormsTableProps {
         message: string;
         createdAt: Date;
         status: string;
+        fileName?: string | null;
     }[];
 }
 
@@ -31,13 +32,14 @@ export function RecentFormsTable({ forms }: RecentFormsTableProps) {
                                 <th className="p-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap">İLGİLENİLEN HİZMET</th>
                                 <th className="p-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap">TARİH</th>
                                 <th className="p-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap">DURUM</th>
+                                <th className="p-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap text-center">DOSYA</th>
                                 <th className="p-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap text-right">İŞLEMLER</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                             {recentForms.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="p-8 text-center text-slate-500">Henüz başvuru yok.</td>
+                                    <td colSpan={6} className="p-8 text-center text-slate-500">Henüz başvuru yok.</td>
                                 </tr>
                             ) : (
                                 recentForms.map((form) => (
@@ -71,6 +73,22 @@ export function RecentFormsTable({ forms }: RecentFormsTableProps) {
                                                 {form.status === 'pending' ? 'Beklemede' :
                                                     form.status === 'reviewed' ? 'İncelendi' : form.status}
                                             </span>
+                                        </td>
+                                        <td className="p-4 whitespace-nowrap text-center">
+                                            {form.fileName ? (
+                                                <a
+                                                    href={`/api/contact/download/${form.id}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 hover:text-blue-800 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800 dark:hover:bg-blue-900/40 transition-all active:scale-95"
+                                                    title={form.fileName || "Dosyayı İndir"}
+                                                >
+                                                    <span className="material-symbols-outlined text-[16px]">download</span>
+                                                    İndir
+                                                </a>
+                                            ) : (
+                                                <span className="text-slate-400 text-xs">-</span>
+                                            )}
                                         </td>
                                         <td className="p-4 whitespace-nowrap text-right">
                                             <FormActions form={form} />

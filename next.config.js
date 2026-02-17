@@ -36,7 +36,12 @@ const nextConfig = {
                 ]
             }
         ]
-    }
+    },
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '24mb',
+        },
+    },
 };
 
 module.exports = nextConfig;

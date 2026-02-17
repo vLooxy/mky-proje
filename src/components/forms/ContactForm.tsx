@@ -88,6 +88,68 @@ export function ContactForm() {
             <div>
                 <label
                     className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                    htmlFor="file"
+                >
+                    Dosya Ekle (PDF)
+                </label>
+                <input
+                    className="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-600"
+                    id="file"
+                    name="file"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                            if (file.type !== "application/pdf") {
+                                alert("Sadece PDF dosyası yükleyebilirsiniz.");
+                                e.target.value = "";
+                                return;
+                            }
+                            if (file.size > 4 * 1024 * 1024) {
+                                alert("Dosya boyutu 4MB'dan küçük olmalıdır.");
+                                e.target.value = "";
+                                return;
+                            }
+                        }
+                    }}
+                />
+                <p className="mt-1 text-xs text-slate-500">Maksimum dosya boyutu: 4MB. Sadece PDF.</p>
+            </div>
+            <div>
+                <label
+                    className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+                    htmlFor="file"
+                >
+                    Dosya Ekle (PDF)
+                </label>
+                <input
+                    className="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-600"
+                    id="file"
+                    name="file"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                            if (file.type !== "application/pdf") {
+                                alert("Sadece PDF dosyası yükleyebilirsiniz.");
+                                e.target.value = "";
+                                return;
+                            }
+                            if (file.size > 4 * 1024 * 1024) {
+                                alert("Dosya boyutu 4MB'dan küçük olmalıdır.");
+                                e.target.value = "";
+                                return;
+                            }
+                        }
+                    }}
+                />
+                <p className="mt-1 text-xs text-slate-500">Maksimum dosya boyutu: 4MB. Sadece PDF.</p>
+            </div>
+            <div>
+                <label
+                    className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
                     htmlFor="message"
                 >
                     Mesaj
