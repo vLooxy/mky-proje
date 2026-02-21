@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Page } from "@prisma/client";
 import { deletePage, createPage } from "./actions";
+import { requirePermission } from "@/lib/auth-checks";
 
 
 // Form Component for creating new page
@@ -40,7 +41,8 @@ function CreatePageForm() {
     )
 }
 
-export default async function PageBuilderIndex() {
+export default async function BuilderPage() {
+    await requirePermission("manage_pages");
     // Prisma henüz migrate edilmemişse hata verebilir, try-catch ile sarmak iyi olur
     let pages: Page[] = [];
     try {

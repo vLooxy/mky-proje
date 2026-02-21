@@ -3,7 +3,10 @@ import { getUsers } from "@/actions/user-actions";
 import { UserList } from "@/components/admin/UserList";
 import { Suspense } from "react";
 
+import { requirePermission, hasPermission } from "@/lib/auth-checks";
+
 export default async function AdminUsersPage() {
+    await requirePermission("manage_users");
     const { users } = await getUsers();
 
     return (
@@ -25,7 +28,7 @@ export default async function AdminUsersPage() {
 
                 <div className="bg-admin-card dark:bg-admin-card-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                     <Suspense fallback={<div className="p-8 text-center text-slate-500">Yükleniyor...</div>}>
-                        <UserList initialUsers={users || []} />
+                        <UserList initialUsers={users || []} canDelete={await hasPermission("delete_records")} />
                     </Suspense>
                 </div>
             </div>

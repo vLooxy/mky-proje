@@ -11,9 +11,10 @@ interface BlogPostsTableProps {
         name: string;
         color: string;
     }[];
+    canDelete: boolean;
 }
 
-export function BlogPostsTable({ posts, categories }: BlogPostsTableProps) {
+export function BlogPostsTable({ posts, categories, canDelete }: BlogPostsTableProps) {
     return (
         <div className="bg-admin-card dark:bg-admin-card-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
@@ -85,7 +86,7 @@ export function BlogPostsTable({ posts, categories }: BlogPostsTableProps) {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <BlogActionButtons postId={post.id} />
+                                        <BlogActionButtons postId={post.id} canDelete={canDelete} />
                                     </td>
                                 </tr>
                             ))

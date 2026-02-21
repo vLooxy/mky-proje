@@ -2,9 +2,12 @@ import { getBlogPosts } from "@/actions/blog-actions";
 import { getCategories } from "@/actions/category-actions";
 import Link from "next/link";
 import { BlogPostsTable } from "@/components/admin/blog/BlogPostsTable";
+import { requirePermission, hasPermission } from "@/lib/auth-checks";
 
+export const dynamic = "force-dynamic";
 
-export default async function AdminBlogPage() {
+export default async function BlogPage() {
+    await requirePermission("manage_blog");
     const posts = await getBlogPosts();
     const categories = await getCategories();
 
@@ -45,7 +48,7 @@ export default async function AdminBlogPage() {
                 </div>
 
                 {/* Blog Posts Table */}
-                <BlogPostsTable posts={posts} categories={categories} />
+                <BlogPostsTable posts={posts} categories={categories} canDelete={await hasPermission("delete_records")} />
             </div>
         </div>
     );

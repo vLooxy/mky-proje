@@ -8,7 +8,7 @@ type User = {
     id: string;
     name: string;
     email: string;
-    role: string;
+    role: { name: string } | null;
 };
 
 export function UserForm({ user }: { user?: User }) {
@@ -90,7 +90,7 @@ export function UserForm({ user }: { user?: User }) {
                     </label>
                     <select
                         name="role"
-                        defaultValue={user?.role || "EDITOR"}
+                        defaultValue={user?.role?.name === 'Yönetici' ? 'ADMIN' : 'EDITOR'}
                         className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
                         <option value="EDITOR">Editör (İçerik Yönetimi)</option>

@@ -7,9 +7,10 @@ import { useState } from "react";
 
 interface BlogActionButtonsProps {
     postId: string;
+    canDelete: boolean;
 }
 
-export function BlogActionButtons({ postId }: BlogActionButtonsProps) {
+export function BlogActionButtons({ postId, canDelete }: BlogActionButtonsProps) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -38,16 +39,18 @@ export function BlogActionButtons({ postId }: BlogActionButtonsProps) {
                 <span className="material-symbols-outlined text-[20px]">edit</span>
             </Link>
 
-            <button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="p-1.5 text-red-500 hover:bg-red-500/10 rounded-md transition-colors disabled:opacity-50"
-                title="Sil"
-            >
-                <span className="material-symbols-outlined text-[20px]">
-                    {isDeleting ? "pending" : "delete"}
-                </span>
-            </button>
+            {canDelete && (
+                <button
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                    className="p-1.5 text-red-500 hover:bg-red-500/10 rounded-md transition-colors disabled:opacity-50"
+                    title="Sil"
+                >
+                    <span className="material-symbols-outlined text-[20px]">
+                        {isDeleting ? "pending" : "delete"}
+                    </span>
+                </button>
+            )}
         </div>
     );
 }

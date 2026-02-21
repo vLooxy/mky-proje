@@ -4,16 +4,11 @@ import { useTransition } from "react";
 import Link from "next/link";
 import { deleteUser } from "@/actions/user-actions";
 
-type User = {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    image?: string | null;
-    createdAt: Date;
-};
+import { User } from "@/types/rbac";
 
-export function UserList({ initialUsers }: { initialUsers: User[] }) {
+// type User = { ... } // Removed local definition in favor of import
+
+export function UserList({ initialUsers, canDelete }: { initialUsers: User[], canDelete: boolean }) {
     const [isPending, startTransition] = useTransition();
 
     const handleDelete = async (id: string) => {
@@ -63,11 +58,11 @@ export function UserList({ initialUsers }: { initialUsers: User[] }) {
                         </td>
                         <td className="p-4">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                ${user.role === 'ADMIN'
+                                ${user.role?.name === 'Yönetici'
                                     ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'
                                     : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
                                 }`}>
-                                {user.role === 'ADMIN' ? 'Yönetici' : 'Editör'}
+                                {user.role?.name || 'Rol Yok'}
                             </span>
                         </td>
                         <td className="p-4 text-slate-500 text-sm">
@@ -81,7 +76,7 @@ export function UserList({ initialUsers }: { initialUsers: User[] }) {
                                 >
                                     <span className="material-symbols-outlined text-[20px]">edit</span>
                                 </Link>
-                                {user.email !== "admin@mkygrup.com" && (
+                                {user.email !== "admin@mkygrup.com" && canDelete && (
                                     <button
                                         onClick={() => handleDelete(user.id)}
                                         disabled={isPending}

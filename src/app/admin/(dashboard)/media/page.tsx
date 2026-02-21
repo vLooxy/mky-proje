@@ -1,4 +1,12 @@
-export default function AdminMediaPage() {
+import { requirePermission } from "@/lib/auth-checks";
+
+export const dynamic = "force-dynamic";
+
+export default async function MediaPage() {
+    await requirePermission("manage_media");
+    // Assuming getMedia() is defined elsewhere or will be added.
+    // For now, I'll comment it out to avoid a reference error if it's not provided.
+    // const { media } = await getMedia();
     return (
         <div className="p-6 lg:p-10">
             <div className="max-w-7xl mx-auto flex flex-col gap-6">

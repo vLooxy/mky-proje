@@ -13,9 +13,11 @@ export async function getUsers() {
                 id: true,
                 name: true,
                 email: true,
-                role: true,
+                roleId: true,
+                role: { select: { name: true } },
                 image: true,
                 createdAt: true,
+                updatedAt: true,
                 // Exclude password
             },
         });
@@ -34,7 +36,7 @@ export async function getUser(id: string) {
                 id: true,
                 name: true,
                 email: true,
-                role: true,
+                role: { select: { name: true } },
                 image: true,
                 // Exclude password
             },
@@ -66,13 +68,14 @@ export async function createUser(data: FormData) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        const roleName = role === "ADMIN" ? "Yönetici" : "Editör";
 
         await prisma.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
-                role,
+                role: { connect: { name: roleName } },
             },
         });
 
@@ -99,6 +102,33 @@ async function isHeadAdmin(email: string) {
     return email === "admin@mkygrup.com";
 }
 
+// --- Helpers ---
+async function checkHeadAdminUpdateProtection(userEmail: string, newRole: string) {
+    if (await isHeadAdmin(userEmail) && newRole !== "ADMIN") {
+        return { success: false, message: "Ana yönetici rolü değiştirilemez." };
+    }
+    return null;
+}
+
+async function checkPasswordUpdateAuthorization(targetUserId: string, newPassword?: string) {
+    if (!newPassword || newPassword.trim() === "") return null;
+
+    const cookieStore = await cookies();
+    const currentUserId = cookieStore.get("admin_user_id")?.value;
+
+    if (currentUserId) {
+        const currentUser = await prisma.user.findUnique({
+            where: { id: currentUserId },
+            include: { role: true }
+        });
+
+        if (currentUser && currentUser.role?.name !== "Yönetici" && currentUser.id !== targetUserId) {
+            return { success: false, message: "Sadece yöneticiler başkalarının şifresini değiştirebilir." };
+        }
+    }
+    return null;
+}
+
 export async function updateUser(id: string, data: FormData) {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
@@ -113,41 +143,25 @@ export async function updateUser(id: string, data: FormData) {
         const userToUpdate = await prisma.user.findUnique({ where: { id } });
         if (!userToUpdate) return { success: false, message: "Kullanıcı bulunamadı." };
 
-        // Checks for Head Admin
-        if (await isHeadAdmin(userToUpdate.email) && role !== "ADMIN") {
-            return { success: false, message: "Ana yönetici rolü değiştirilemez." };
-        }
+        const headAdminCheck = await checkHeadAdminUpdateProtection(userToUpdate.email, role);
+        if (headAdminCheck) return headAdminCheck;
 
-        const updateData: { name: string; email: string; role: string; password?: string } = {
-            name,
-            email,
-            role,
-        };
+        const passwordCheck = await checkPasswordUpdateAuthorization(id, password);
+        if (passwordCheck) return passwordCheck;
+
+        const roleName = role === "ADMIN" ? "Yönetici" : "Editör";
+        const updateData: any = { name, email };
 
         if (password && password.trim() !== "") {
-            // Check if current user is allowed to change password.
-            // Requirement: "Sadece parolasını yönetici hesapları değiştirebilsin"
-            // Assuming the person performing this action IS a "yönetici hesabı" (Admin role).
-            // But we don't have the context of the CURRENT user executing this action easily without full session.
-            // However, the panel is protected. We can assume access = authorized for now, 
-            // OR we fetch the current user from the cookie 'admin_user_id' if we set it.
-
-            const cookieStore = await cookies();
-            const currentUserId = cookieStore.get("admin_user_id")?.value;
-
-            if (currentUserId) {
-                const currentUser = await prisma.user.findUnique({ where: { id: currentUserId } });
-                if (currentUser && currentUser.role !== "ADMIN" && currentUser.id !== id) {
-                    return { success: false, message: "Sadece yöneticiler başkalarının şifresini değiştirebilir." };
-                }
-            }
-
             updateData.password = await bcrypt.hash(password, 10);
         }
 
         await prisma.user.update({
             where: { id },
-            data: updateData,
+            data: {
+                ...updateData,
+                role: { connect: { name: roleName } }
+            },
         });
 
         revalidatePath("/admin/users");
@@ -159,8 +173,15 @@ export async function updateUser(id: string, data: FormData) {
     }
 }
 
+import { hasPermission } from "@/lib/auth-checks";
+
 export async function deleteUser(id: string) {
     try {
+        const canDelete = await hasPermission("delete_records");
+        if (!canDelete) {
+            return { success: false, message: "Bu işlem için yetkiniz yok (delete_records)." };
+        }
+
         const user = await prisma.user.findUnique({ where: { id } });
         if (!user) return { success: false, message: "Kullanıcı bulunamadı." };
 

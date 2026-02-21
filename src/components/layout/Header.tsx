@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { getSettings } from "@/actions/settings-actions";
 
 interface NavItem {
     name: string;
@@ -13,38 +12,27 @@ interface NavItem {
     dropdownItems?: { name: string; href: string }[];
 }
 
-export function Header() {
+interface HeaderProps {
+    initialSiteTitle?: string;
+    initialNavItems?: NavItem[];
+}
+
+export function Header({ initialSiteTitle = "MKY", initialNavItems = [] }: HeaderProps) {
     const { theme, setTheme } = useTheme();
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [siteTitle, setSiteTitle] = useState("MKY");
 
-    const [navItems, setNavItems] = useState<NavItem[]>([
+    // Use props directly instead of client-state to prevent layout shift
+    const siteTitle = initialSiteTitle;
+    const navItems = initialNavItems.length > 0 ? initialNavItems : [
         { name: "Ana Sayfa", href: "/" },
         { name: "Hizmetlerimiz", href: "/hizmetlerimiz" },
         { name: "İletişim", href: "/iletisim" },
-    ]);
+    ];
 
     useEffect(() => {
-        setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
-        // Fetch settings on mount
-        getSettings().then(data => {
-            if (data?.site?.title) {
-                setSiteTitle(data.site.title);
-            }
-            if (data?.header?.navItems) {
-                setNavItems(data.header.navItems.map((item: { label: string; href: string; subItems?: { label: string; href: string }[] }): NavItem => ({
-                    name: item.label,
-                    href: item.href,
-                    hasDropdown: !!item.subItems?.length,
-                    dropdownItems: item.subItems?.map((sub: { label: string; href: string }) => ({
-                        name: sub.label,
-                        href: sub.href
-                    }))
-                })));
-            }
-        });
+        setMounted(true);
     }, []);
 
     return (

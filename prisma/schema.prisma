@@ -44,10 +44,32 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("EDITOR") // ADMIN, EDITOR
+  
+  // Relation to Role
+  roleId    String?
+  role      Role?    @relation(fields: [roleId], references: [id])
+  
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String       @unique // e.g., "Yönetici", "Editör"
+  description String?
+  permissions Permission[] // Implicit many-to-many
+  users       User[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  slug        String   @unique // e.g., "manage_users", "view_dashboard"
+  name        String
+  description String?
+  roles       Role[]   // Implicit many-to-many
 }
 
 model ContactForm {

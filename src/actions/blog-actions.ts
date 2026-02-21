@@ -86,8 +86,15 @@ export async function updateBlogPost(id: string, newData: Partial<BlogPost>) {
     }
 }
 
+import { hasPermission } from "@/lib/auth-checks";
+
 export async function deleteBlogPost(id: string) {
     try {
+        const canDelete = await hasPermission("delete_records");
+        if (!canDelete) {
+            return { success: false, error: "Bu işlem için yetkiniz yok (delete_records)." };
+        }
+
         await prisma.blog.delete({
             where: { id }
         });
