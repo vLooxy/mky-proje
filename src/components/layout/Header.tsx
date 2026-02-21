@@ -18,7 +18,7 @@ interface HeaderProps {
 }
 
 export function Header({ initialSiteTitle = "MKY", initialNavItems = [] }: HeaderProps) {
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme, resolvedTheme } = useTheme();
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -96,11 +96,11 @@ export function Header({ initialSiteTitle = "MKY", initialNavItems = [] }: Heade
                 <div className="flex items-center gap-2 md:gap-4">
                     {/* Theme Toggle */}
                     <button
-                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
                         className="flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white"
                         aria-label="Temayı değiştir"
                     >
-                        {mounted && theme === "dark" ? (
+                        {mounted && resolvedTheme === "dark" ? (
                             <span className="material-symbols-outlined text-xl">light_mode</span>
                         ) : (
                             <span className="material-symbols-outlined text-xl">dark_mode</span>
