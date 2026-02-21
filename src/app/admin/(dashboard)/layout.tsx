@@ -13,7 +13,7 @@ export default async function AdminLayout({
         <div className="flex h-screen w-full bg-background-light dark:bg-background-dark overflow-hidden text-slate-900 dark:text-slate-100 font-display">
             <AdminSidebar user={user} />
             <main className="flex-1 flex flex-col h-full relative overflow-hidden bg-background-light dark:bg-background-dark">
-                <AdminMobileHeader />
+                <AdminMobileHeader user={user} />
                 <div className="flex-1 overflow-y-auto scroll-smooth">
                     {children}
                 </div>

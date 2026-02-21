@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { AdminSidebarContent } from "./AdminSidebarContent";
+import { User } from "@/types/rbac";
 
-export function AdminMobileHeader() {
+export function AdminMobileHeader({ user }: { user: User | null | undefined }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -49,6 +50,7 @@ export function AdminMobileHeader() {
                 </div>
 
                 <AdminSidebarContent
+                    user={user || undefined}
                     className="pt-8"
                     onLinkClick={() => setIsOpen(false)}
                 />
