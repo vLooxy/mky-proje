@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { getBlogPosts } from "@/actions/blog-actions";
+import { getCategories } from "@/actions/category-actions";
+import { BlogPost } from "@/types/blog";
 
 // Tell Next.js to revalidate this page every minute or strictly dynamic
 export const revalidate = 60;
 
 export default async function BlogPage() {
     const posts = await getBlogPosts();
+    const categories = await getCategories();
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -70,11 +73,27 @@ export default async function BlogPage() {
                     </FadeIn>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {posts.map((post: any, i: number) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
-                            <FadeIn key={post.id || i} delay={i * 100} direction="up" className="h-full">
-                                <BlogCard {...post} />
-                            </FadeIn>
-                        ))}
+                        {posts.map((post: BlogPost, i: number) => {
+                            const category = categories.find(c => c.id === post.categoryId);
+
+                            const cardProps = {
+                                badge: category?.name || "Genel",
+                                badgeColor: category?.color || "bg-slate-500",
+                                image: post.image || "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?auto=format&fit=crop&q=80&w=800",
+                                date: post.date ? new Date(post.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }) : "",
+                                readTime: post.readTime || "5 dk okuma",
+                                title: post.title,
+                                snippet: post.excerpt,
+                                author: post.author || "Admin",
+                                slug: post.slug,
+                            };
+
+                            return (
+                                <FadeIn key={post.id || i} delay={i * 100} direction="up" className="h-full">
+                                    <BlogCard {...cardProps} />
+                                </FadeIn>
+                            );
+                        })}
                     </div>
 
                     <div className="mt-16 flex justify-center">
@@ -107,6 +126,7 @@ function BlogCard({
     title,
     snippet,
     author,
+    slug,
 }: {
     badge: string;
     badgeColor: string;
@@ -116,6 +136,7 @@ function BlogCard({
     title: string;
     snippet: string;
     author: string;
+    slug?: string;
 }) {
     return (
         <article className="flex flex-col bg-white dark:bg-[#1a2632] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-800 transition-all duration-300 group h-full">
@@ -161,7 +182,7 @@ function BlogCard({
                     </div>
                     <Link
                         className="text-primary hover:text-blue-600 font-bold text-sm flex items-center gap-1 group/link"
-                        href="/"
+                        href={slug ? `/blog/${slug}` : "/"}
                     >
                         Oku{" "}
                         <span className="material-symbols-outlined text-sm transition-transform group-hover/link:translate-x-1">

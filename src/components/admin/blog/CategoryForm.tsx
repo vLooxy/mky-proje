@@ -108,7 +108,7 @@ export default function CategoryForm({ initialCategories }: CategoryFormProps) {
                                 <option value="bg-green-500">Yeşil</option>
                                 <option value="bg-red-500">Kırmızı</option>
                                 <option value="bg-yellow-500">Sarı</option>
-                                <option value="bg-purple-500">Mor</option>
+                                <option value="bg-emerald-500">Mavi-Yeşil</option>
                                 <option value="bg-gray-500">Gri</option>
                             </select>
                         </div>

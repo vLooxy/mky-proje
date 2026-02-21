@@ -4,14 +4,20 @@ import { useTransition, useState } from "react";
 import { createUser, updateUser } from "@/actions/user-actions";
 import { useRouter } from "next/navigation";
 
+type Role = {
+    id: string;
+    name: string;
+};
+
 type User = {
     id: string;
     name: string;
     email: string;
+    roleId?: string | null;
     role: { name: string } | null;
 };
 
-export function UserForm({ user }: { user?: User }) {
+export function UserForm({ user, roles }: { user?: User, roles: Role[] }) {
     const isEdit = !!user;
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | null>(null);
@@ -89,12 +95,17 @@ export function UserForm({ user }: { user?: User }) {
                         Rol
                     </label>
                     <select
-                        name="role"
-                        defaultValue={user?.role?.name === 'Yönetici' ? 'ADMIN' : 'EDITOR'}
+                        name="roleId"
+                        defaultValue={user?.roleId || ''}
+                        required
                         className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
-                        <option value="EDITOR">Editör (İçerik Yönetimi)</option>
-                        <option value="ADMIN">Yönetici (Tam Yetki)</option>
+                        <option value="" disabled>Rol Seçin</option>
+                        {roles.map(role => (
+                            <option key={role.id} value={role.id}>
+                                {role.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

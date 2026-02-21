@@ -1,6 +1,10 @@
 import BlogPostForm from "@/components/admin/blog/BlogPostForm";
+import { getCurrentUser } from "@/actions/auth-actions";
 
-export default function NewPostPage() {
+export default async function NewPostPage() {
+    const user = await getCurrentUser();
+    const isAdmin = user?.role?.name === "Yönetici";
+
     return (
         <div className="p-6 lg:p-10">
             <div className="max-w-4xl mx-auto flex flex-col gap-6">
@@ -10,7 +14,7 @@ export default function NewPostPage() {
                 </div>
 
                 <div className="bg-admin-card dark:bg-admin-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <BlogPostForm />
+                    <BlogPostForm isAdmin={isAdmin} />
                 </div>
             </div>
         </div>

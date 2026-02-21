@@ -54,7 +54,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
 
                 {section.type === 'home-hero' && (
                     <div className="text-center py-20 bg-[#0B1120] text-white rounded relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10"></div>
                         <div className="inline-block px-3 py-1 mb-4 rounded-full border border-blue-500/30 bg-blue-500/10 text-[10px] text-blue-300 uppercase tracking-widest">{section.content.badge}</div>
                         <h1 className="text-4xl font-black leading-none mb-4">
                             {section.content.title_line1}<br />
@@ -156,7 +156,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
                         <h2 className="text-xs font-bold text-blue-500 uppercase tracking-widest mb-2">{section.content.smallTitle}</h2>
                         <h1 className="text-4xl font-black leading-none mb-4 text-slate-900 dark:text-white">
                             {section.content.titleLine1}<br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">{section.content.titleLine2}</span><br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500">{section.content.titleLine2}</span><br />
                             {section.content.titleLine3}
                         </h1>
                     </div>
@@ -220,7 +220,7 @@ export function SortableSection({ section, isSelected, onClick, onDelete }: Sort
 
                 {section.type === 'hero-modern' && (
                     <div className="text-center py-20 bg-[#0B1120] text-white rounded relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10"></div>
                         <h2 className="text-xs font-bold tracking-[0.2em] text-blue-500 uppercase mb-2">{section.content.smallTitle}</h2>
                         <h1 className="text-5xl font-black leading-none">
                             {section.content.titleLine1}<br />

@@ -36,6 +36,7 @@ export async function getUser(id: string) {
                 id: true,
                 name: true,
                 email: true,
+                roleId: true,
                 role: { select: { name: true } },
                 image: true,
                 // Exclude password
@@ -55,9 +56,9 @@ export async function createUser(data: FormData) {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const password = data.get("password") as string;
-    const role = data.get("role") as string || "EDITOR";
+    const roleId = data.get("roleId") as string;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !roleId) {
         return { success: false, message: "Tüm alanları doldurun." };
     }
 
@@ -68,14 +69,13 @@ export async function createUser(data: FormData) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const roleName = role === "ADMIN" ? "Yönetici" : "Editör";
 
         await prisma.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
-                role: { connect: { name: roleName } },
+                roleId: roleId,
             },
         });
 
@@ -103,9 +103,12 @@ async function isHeadAdmin(email: string) {
 }
 
 // --- Helpers ---
-async function checkHeadAdminUpdateProtection(userEmail: string, newRole: string) {
-    if (await isHeadAdmin(userEmail) && newRole !== "ADMIN") {
-        return { success: false, message: "Ana yönetici rolü değiştirilemez." };
+async function checkHeadAdminUpdateProtection(userEmail: string, newRoleId: string) {
+    if (await isHeadAdmin(userEmail)) {
+        const newRole = await prisma.role.findUnique({ where: { id: newRoleId } });
+        if (newRole && newRole.name !== "Yönetici") {
+            return { success: false, message: "Ana yönetici rolü değiştirilemez." };
+        }
     }
     return null;
 }
@@ -133,24 +136,23 @@ export async function updateUser(id: string, data: FormData) {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const password = data.get("password") as string; // Optional
-    const role = data.get("role") as string;
+    const roleId = data.get("roleId") as string;
 
-    if (!name || !email) {
-        return { success: false, message: "İsim ve e-posta zorunludur." };
+    if (!name || !email || !roleId) {
+        return { success: false, message: "İsim, e-posta ve rol zorunludur." };
     }
 
     try {
         const userToUpdate = await prisma.user.findUnique({ where: { id } });
         if (!userToUpdate) return { success: false, message: "Kullanıcı bulunamadı." };
 
-        const headAdminCheck = await checkHeadAdminUpdateProtection(userToUpdate.email, role);
+        const headAdminCheck = await checkHeadAdminUpdateProtection(userToUpdate.email, roleId);
         if (headAdminCheck) return headAdminCheck;
 
         const passwordCheck = await checkPasswordUpdateAuthorization(id, password);
         if (passwordCheck) return passwordCheck;
 
-        const roleName = role === "ADMIN" ? "Yönetici" : "Editör";
-        const updateData: any = { name, email };
+        const updateData: Record<string, string> = { name, email, roleId };
 
         if (password && password.trim() !== "") {
             updateData.password = await bcrypt.hash(password, 10);
@@ -158,10 +160,7 @@ export async function updateUser(id: string, data: FormData) {
 
         await prisma.user.update({
             where: { id },
-            data: {
-                ...updateData,
-                role: { connect: { name: roleName } }
-            },
+            data: updateData,
         });
 
         revalidatePath("/admin/users");

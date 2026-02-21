@@ -9,10 +9,12 @@ export default async function SiteLayout({
 }>) {
     const settings = await getSettings();
     const siteTitle = settings?.site?.title || "MKY";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const navItems = settings?.header?.navItems?.map((item: any) => ({
         name: item.label,
         href: item.href,
         hasDropdown: !!item.subItems?.length,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dropdownItems: item.subItems?.map((sub: any) => ({
             name: sub.label,
             href: sub.href

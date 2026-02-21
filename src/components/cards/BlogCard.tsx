@@ -10,6 +10,7 @@ export function BlogCard({
     title,
     snippet,
     author,
+    slug,
 }: {
     badge: string;
     badgeColor: string;
@@ -19,6 +20,7 @@ export function BlogCard({
     title: string;
     snippet: string;
     author: string;
+    slug?: string;
 }) {
     return (
         <article className="flex flex-col bg-white dark:bg-[#1a2632] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-800 transition-all duration-300 group h-full">
@@ -64,7 +66,7 @@ export function BlogCard({
                     </div>
                     <Link
                         className="text-primary hover:text-blue-600 font-bold text-sm flex items-center gap-1 group/link"
-                        href="/"
+                        href={slug ? `/blog/${slug}` : "/"}
                     >
                         Oku{" "}
                         <span className="material-symbols-outlined text-sm transition-transform group-hover/link:translate-x-1">

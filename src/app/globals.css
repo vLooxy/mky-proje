@@ -1,14 +1,15 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-primary: #137fec;
-  
+
   --color-background-light: #f6f7f8;
   --color-background-dark: #101922;
-  
+
   --color-surface-light: #ffffff;
   --color-surface-dark: #1a2634;
-  
+
   --color-text-main: #111418;
   --color-text-light: #617589;
 
@@ -25,17 +26,44 @@
   --color-admin-card-dark: #1e2936;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-body {
-  font-family: var(--font-body);
-}
-
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
 /* Base styles to match theme's body classes */
 body {
-    @apply bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200;
+  @apply bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200;
+}
+
+/* TipTap Table Styles */
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.ProseMirror table td,
+.ProseMirror table th {
+  min-width: 1em;
+  border: 1px solid var(--color-admin-sidebar-border);
+  padding: 8px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.ProseMirror table th {
+  font-weight: bold;
+  text-align: left;
+  background-color: var(--color-admin-bg);
+}
+
+.dark .ProseMirror table th {
+  background-color: var(--color-admin-sidebar);
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }

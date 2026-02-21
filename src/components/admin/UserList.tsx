@@ -59,7 +59,7 @@ export function UserList({ initialUsers, canDelete }: { initialUsers: User[], ca
                         <td className="p-4">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                 ${user.role?.name === 'Yönetici'
-                                    ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
                                     : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
                                 }`}>
                                 {user.role?.name || 'Rol Yok'}

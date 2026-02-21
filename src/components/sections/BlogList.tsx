@@ -109,10 +109,11 @@ export function BlogList({ initialPosts, categories, title, itemsPerPage = 6, sh
                                 badgeColor: category?.color || "bg-slate-500",
                                 image: post.image || "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?auto=format&fit=crop&q=80&w=800",
                                 date: post.date ? new Date(post.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }) : "",
-                                readTime: "5 dk okuma", // Placeholder or calculate from content length
+                                readTime: post.readTime || "5 dk okuma",
                                 title: post.title,
                                 snippet: post.excerpt,
                                 author: post.author || "Admin",
+                                slug: post.slug,
                             };
 
                             return (

@@ -1,6 +1,10 @@
 import { UserForm } from "@/components/admin/UserForm";
+import { getRoles } from "@/actions/role-actions";
 
-export default function NewUserPage() {
+export default async function NewUserPage() {
+    const rolesRes = await getRoles();
+    const roles = rolesRes.success && rolesRes.roles ? rolesRes.roles : [];
+
     return (
         <div className="p-6 lg:p-10">
             <div className="max-w-3xl mx-auto flex flex-col gap-6">
@@ -10,7 +14,7 @@ export default function NewUserPage() {
                 </div>
 
                 <div className="bg-admin-card dark:bg-admin-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
-                    <UserForm />
+                    <UserForm roles={roles} />
                 </div>
             </div>
         </div>

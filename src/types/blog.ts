@@ -18,4 +18,6 @@ export interface BlogPost {
     tags?: string[];
     isPublished?: boolean;
     categoryId?: string | null;
+    readTime?: string | null;
+    publishedAt?: string | null;
 }

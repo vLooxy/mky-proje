@@ -1,5 +1,6 @@
 import { UserForm } from "@/components/admin/UserForm";
 import { getUser } from "@/actions/user-actions";
+import { getRoles } from "@/actions/role-actions";
 import { notFound } from "next/navigation";
 
 interface EditUserPageProps {
@@ -10,11 +11,16 @@ interface EditUserPageProps {
 
 export default async function EditUserPage({ params }: EditUserPageProps) {
     const { id } = await params;
-    const { success, user } = await getUser(id);
+    const [{ success, user }, rolesRes] = await Promise.all([
+        getUser(id),
+        getRoles()
+    ]);
 
     if (!success || !user) {
         notFound();
     }
+
+    const roles = rolesRes.success && rolesRes.roles ? rolesRes.roles : [];
 
     return (
         <div className="p-6 lg:p-10">
@@ -25,7 +31,7 @@ export default async function EditUserPage({ params }: EditUserPageProps) {
                 </div>
 
                 <div className="bg-admin-card dark:bg-admin-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
-                    <UserForm user={user} />
+                    <UserForm user={user} roles={roles} />
                 </div>
             </div>
         </div>

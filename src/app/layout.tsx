@@ -13,6 +13,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "MKY Grup - Mühendislik ve İSG",
   description: "Hassas Mühendislik & Dünya Standartlarında Güvenlik Çözümleri",
+  openGraph: {
+    title: "MKY Grup - Mühendislik ve İSG",
+    description: "Hassas Mühendislik & Dünya Standartlarında Güvenlik Çözümleri",
+    url: "https://mkygrup.com",
+    siteName: "MKY Grup",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
